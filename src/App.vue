@@ -1,28 +1,68 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <router-view></router-view>
+    <efooter></efooter>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+
+import efooter from './components/Efooter'
 
 export default {
   name: 'app',
+  data(){
+    return{
+      HomeArr:''
+    }
+  },
   components: {
-    HelloWorld
+    efooter
+  },
+  mounted(){
+    this.getHomeData();
+    this.getHotData();
+  },
+  methods:{
+      getHomeData:function(){
+          var self=this;
+          $.ajax({
+            type:'get',
+            url:'http://localhost:9999/gethomemsg',
+            async:true,
+            success:function(data){
+              self.HomeArr=JSON.parse(data);
+              self.$store.dispatch("setHomeData",self.HomeArr)
+              localStorage.setItem("homedata",JSON.stringify(self.HomeArr));
+            }
+          })
+      },
+      getHotData:function(){
+         var self=this;
+          $.ajax({
+            type:'get',
+            url:'http://localhost:9999/gethotmsg',
+            async:true,
+            success:function(data){
+              self.HomeArr=JSON.parse(data);
+              self.$store.dispatch("setHomeData",self.HomeArr)
+              localStorage.setItem("hotdata",JSON.stringify(self.HomeArr));
+            }
+          })
+      }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  *{
+    margin:0;
+    padding:0;
+  }
+  a {
+    text-decoration: none;
+  }
+  ul,li{
+    list-style:none;
+  }
 </style>
