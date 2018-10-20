@@ -1,11 +1,11 @@
 <template>
-  <div>
-    {{name}}
+  <div id="magazine">
+    <magazinemain></magazinemain>
   </div>
 </template>
 
 <script>
-
+  import magazinemain from '../components/Magazinemain'
   export default {
     props:[''],
     data () {
@@ -13,22 +13,20 @@
         name:'magazine'
       };
     },
-
-    components: {},
-
+    components: {
+      magazinemain
+    },
     computed: {},
-
-    beforeMount() {},
-
     mounted() {},
-
     methods: {},
-
     watch: {}
-
   }
 
 </script>
-<style lang='' scoped>
-
+<style lang='scss' scoped>
+  #magazine{
+    height: 1235px;
+    overflow: hidden;
+    z-index:2;
+  }
 </style>

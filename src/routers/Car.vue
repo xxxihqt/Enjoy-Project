@@ -1,10 +1,13 @@
 <template>
-  <div>
-    {{name}}
+  <div id="car">
+    <carmain></carmain>
+    <carrecommend></carrecommend>
   </div>
 </template>
 
 <script>
+  import carmain from '../components/carCom/Carmain'
+  import carrecommend from '../components/carCom/Carrecommend'
 
   export default {
     props:[''],
@@ -14,7 +17,10 @@
       };
     },
 
-    components: {},
+    components: {
+      carmain,
+      carrecommend
+    },
 
     computed: {},
 
@@ -29,6 +35,10 @@
   }
 
 </script>
-<style lang='' scoped>
+<style lang='scss' scoped>
+  #car{
+    height: 1235px;
+    overflow-y: scroll;
 
+  }
 </style>

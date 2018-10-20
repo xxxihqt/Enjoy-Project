@@ -72,7 +72,6 @@ import lasthome from '../components/homeCom/LastHome'
 <style lang='scss' scoped>
   #home{
     padding:0px 0px 100px 0px;
-    height:100%;
-    overflow-y:scroll;
+    z-index:1;
   }
 </style>

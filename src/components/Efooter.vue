@@ -1,6 +1,8 @@
 <template>
     <div id="bottom-bar">
-      <a v-for="(item,idx) in bar" :key="idx" :class="[item.iclass,{active:isactive===idx}]" class="iconfont" @click="changeActive(idx)" ></a>
+      <a v-for="(item,idx) in bar" :key="idx" :class="[item.iclass,{active:isactive===idx}]" class="iconfont" @click="changeActive(idx)" >
+        <span v-text="item.name"></span>
+      </a>
     </div>
 
 </template>
@@ -12,20 +14,20 @@ import '../assets/icon/iconfont.css'
     data () {
       return {
         bar:[{
-              name:'home',
+              name:'精选',
               iclass:'icon-icon',
             },{
-              name:'classify',
+              name:'分类',
               iclass:'icon-fenlei',
             },{
-              name:'magazine',
+              name:'杂志',
               iclass:'icon-zazhiqikan'
             },{
-              name:'car',
+              name:'购物车',
               iclass:'icon-iconset0308'
             }
             ,{
-              name:'me',
+              name:'我的',
               iclass:'icon-wode'
             }],
         isactive:0
@@ -75,13 +77,25 @@ import '../assets/icon/iconfont.css'
     width: 750px;
     height: 98px;
     border-top: 1px solid #e0e0e0;
+    z-index:10000;
     a{
       flex:1;
       text-align:center;
-      font-size:50px;
+      font-size:40px;
       font-weight:600;
       line-height:98px;
       color:gray;
+      display: block;
+      position: relative;
+      span{
+        font-size:20px;
+        font-weight:200;
+        display: block;
+        position:absolute;
+        left:0;
+        right: 0;
+        top:35px;
+      }
     }
     .active{
       color:black;

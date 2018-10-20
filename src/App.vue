@@ -13,7 +13,10 @@ export default {
   name: 'app',
   data(){
     return{
-      HomeArr:''
+      HomeArr:'',
+      HotArr:'',
+      MagazineArr:'',
+      CarRecommendArr:''
     }
   },
   components: {
@@ -22,6 +25,8 @@ export default {
   mounted(){
     this.getHomeData();
     this.getHotData();
+    this.getMagezineData();
+    this.getCarRecommendData();
   },
   methods:{
       getHomeData:function(){
@@ -44,12 +49,38 @@ export default {
             url:'http://localhost:9999/gethotmsg',
             async:true,
             success:function(data){
-              self.HomeArr=JSON.parse(data);
-              self.$store.dispatch("setHomeData",self.HomeArr)
-              localStorage.setItem("hotdata",JSON.stringify(self.HomeArr));
+              self.HotArr=JSON.parse(data);
+              self.$store.dispatch("setHotData",self.HotArr)
+              localStorage.setItem("hotdata",JSON.stringify(self.HotArr));
             }
           })
-      }
+      },
+       getMagezineData:function(){
+         var self=this;
+          $.ajax({
+            type:'get',
+            url:'http://localhost:9999/getmagazinemsg',
+            async:true,
+            success:function(data){
+              self.MagazineArr=JSON.parse(data);
+              self.$store.dispatch("setMagazineData",self.MagazineArr)
+              localStorage.setItem("magazinedata",JSON.stringify(self.MagazineArr));
+            }
+          })
+        },
+      getCarRecommendData:function(){
+         var self=this;
+          $.ajax({
+            type:'get',
+            url:'http://localhost:9999/getcarrecommendmsg',
+            async:true,
+            success:function(data){
+              self.CarRecommendArr=JSON.parse(data);
+              self.$store.dispatch("setCarRecommendData",self.CarRecommendArr)
+              localStorage.setItem("carrecommenddata",JSON.stringify(self.CarRecommendArr));
+            }
+          })
+        }
   }
 }
 </script>

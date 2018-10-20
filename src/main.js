@@ -60,24 +60,54 @@ const router = new VueRouter({
 const store = new Vuex.Store({
 	/*状态*/
 	state: {
-		homeData: "",
+    homeData: "",
+    hotData:'',
+    MagezineData:'',
+    CarRecommend:''
 	},
 	/*存放到状态管理中*/
 	mutations: {
 		keepHomeData(state, data) {
 			state.homeData = data;
+    },
+    keepHotData(state, data) {
+			state.hotData = data;
+    },
+    keepMagazineData(state, data) {
+			state.MagezineData = data;
+    },
+    keepCarRecommendData(state, data) {
+			state.CarRecommend = data;
 		}
   },
   /*从子组件拿回数据，触发mutations*/
 	actions: {
 		setHomeData(context, data) {
-			context.commit('keepHomeData', data)
-		},
+			context.commit('keepHomeData', data);
+    },
+    setHotData(context, data) {
+			context.commit('keepHotData', data);
+    },
+    setMagazineData(context, data) {
+			context.commit('keepMagazineData', data);
+    },
+    setCarRecommendData(context, data) {
+			context.commit('keepCarRecommendData', data);
+		}
   },
   /*把数据返回给子组件*/
 	getters:{
 		getHomeData(state){
-			return state.homeData
+			return state.homeData;
+    },
+    getHotData(state){
+			return state.hotData;
+    },
+    getMagazineData(state){
+			return state.MagezineData;
+    },
+    getCarRecommendData(state){
+			return state.CarRecommend;
 		}
 	}
 })

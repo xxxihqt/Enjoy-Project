@@ -1,0 +1,119 @@
+/* 更多推荐*/ 
+<template>
+  <div>
+    <div class="recommendProduct">
+        <p id="title">
+           更多推荐
+        </p> 
+        <ul class="productlist">
+            <li v-for="(item,idx) in tabs" :key="idx">
+                <img :src="item.product_image" alt="">
+                <p v-text="item.short_name" class="title"></p>
+                <p class="priceBox">
+                    <span v-text="item.price+'/'+item.show_entity_name" class="price"></span>
+                </p>
+            </li>
+        </ul>
+        <div class="logo">
+            <img :src="logoUrl" alt="" >
+        </div>
+    </div>
+  </div>
+</template>
+
+<script>
+
+  export default {
+    data () {
+      return {
+          tabs:'',
+          logoUrl:require('../..//imgs/logo3.png')
+      };
+    },
+
+    components: {},
+
+    computed: {},
+
+    mounted() {
+        this.renderNewProduct();
+    },
+
+    methods: {
+         renderNewProduct(){
+            this.tabs=JSON.parse(localStorage.getItem("carrecommenddata"));
+        }
+    },
+
+    watch: {}
+
+  }
+
+</script>
+<style lang='scss' scoped>
+    .recommendProduct{
+        padding: 20px 40px;
+        #title {
+            font-size: 30px;
+            font-weight: 600;
+            color: #191919;
+            margin-bottom: 8px;
+            position:relative;
+            text-align: center;
+        }
+        .productlist{
+            display: flex;
+            margin-top:30px;
+            flex-wrap:wrap;
+            justify-content: space-between;
+            li{
+                position: relative;;
+                height: 380px;
+                border-bottom:1px solid #ccc;
+                width: 325px;
+                img{
+                    width: 325px;
+                }
+                .title{
+                    width: 325px;
+                    font-size:26px;
+                    text-overflow: -o-ellipsis-lastline;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    line-clamp: 2;
+                    -webkit-box-orient: vertical;
+                }
+                .priceBox{
+                    height: 50px;
+                    line-height: 0px;
+                    overflow: hidden;
+                    padding-bottom:20px;
+                    position:absolute;
+                    left:0;
+                    bottom:0;
+                    width: 325px;
+                    .price{
+                        font-size:20px;
+                        color:red;
+                        display: inline-block;
+                        margin-right:20px;
+                    }
+                    .original_price{
+                        font-size:20px;
+                        display: inline-block;
+                        color:#ccc;
+                    }
+                }
+                
+            }
+        }
+        .logo{
+            text-align:center;
+            img{
+                width:100px;
+            }       
+        }
+    }
+</style>
