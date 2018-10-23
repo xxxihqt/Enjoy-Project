@@ -36,7 +36,7 @@ export default {
             url:'http://localhost:9999/gethomemsg',
             async:true,
             success:function(data){
-              self.HomeArr=JSON.parse(data);
+              self.HomeArr=data;
               self.$store.dispatch("setHomeData",self.HomeArr)
               localStorage.setItem("homedata",JSON.stringify(self.HomeArr));
             }
@@ -49,7 +49,7 @@ export default {
             url:'http://localhost:9999/gethotmsg',
             async:true,
             success:function(data){
-              self.HotArr=JSON.parse(data);
+              self.HotArr=data;
               self.$store.dispatch("setHotData",self.HotArr)
               localStorage.setItem("hotdata",JSON.stringify(self.HotArr));
             }
@@ -62,7 +62,8 @@ export default {
             url:'http://localhost:9999/getmagazinemsg',
             async:true,
             success:function(data){
-              self.MagazineArr=JSON.parse(data);
+              console.log('data:',data);
+              self.MagazineArr=data;
               self.$store.dispatch("setMagazineData",self.MagazineArr)
               localStorage.setItem("magazinedata",JSON.stringify(self.MagazineArr));
             }
@@ -75,7 +76,7 @@ export default {
             url:'http://localhost:9999/getcarrecommendmsg',
             async:true,
             success:function(data){
-              self.CarRecommendArr=JSON.parse(data);
+              self.CarRecommendArr=data;
               self.$store.dispatch("setCarRecommendData",self.CarRecommendArr)
               localStorage.setItem("carrecommenddata",JSON.stringify(self.CarRecommendArr));
             }

@@ -1,6 +1,7 @@
 var express = require('express');
 var request = require('request');
 var app = express();
+var db = require('./db.js');
 
 app.get('/gethomemsg',function(req,res){
     res.append("Access-Control-Allow-Origin", "*");
@@ -26,13 +27,24 @@ app.get('/gethotmsg',function(req,res){
 
 app.get('/getmagazinemsg',function(req,res){
     res.append("Access-Control-Allow-Origin", "*");
-    request('https://s1.ricebook.com/cdn/home/djEvYXJ0aWNsZS9pbl9saXN0Lmpzb24/Y2l0eT0yMTYmdHlwZT1NQUdBWklORSZwYWdlPTAmbWQ1PTRiMmYyZWYwMDMyZmE2NTc2OGJkNDIwMjNhMDc4OWM2JjIwMTgxMDIwMTEwMA==.json,function(err,response,body',function(err,response,body){
-        if(err){
-            throw err;
+
+    db.query('find','magazineData',{},null,function(docs){
+        //console.log(docs.length);
+        var obj={
+        group_section:{desc: "· 一点关于吃喝的人生经验 ·"},
+        tabs:docs
         }
-        //console.log(body);
-        res.send(body)
+        res.send(obj);
     })
+        /*for(let i=0;i<11;i++){
+            request(`https:/\/open.seriousapps.cn/hub/home/v1/article/list.json?city=216&page=${i}`,function(err,response,body){
+                if(err){
+                    //throw err;
+               }
+                db.query('write','magazineData',JSON.parse(body).tabs);
+                //res.send(body)
+            })
+       } */    
 })
 
 app.get('/getcarrecommendmsg',function(req,res){
@@ -42,7 +54,41 @@ app.get('/getcarrecommendmsg',function(req,res){
             throw err;
         }
         //console.log(body);
-        res.send(body)
+        res.send(body);
+    })
+})
+
+app.get('/getproduct',function(req,res){
+    res.append("Access-Control-Allow-Origin", "*");
+
+        db.query('find','detailProduct',{},null,function(docs){
+            res.send(docs);
+    }); 
+})
+
+app.get('/hotsale',function(req,res){
+    res.append("Access-Control-Allow-Origin", "*");
+    db.query('find','hotSale',{},null,function(docs){
+        docs.forEach(function(item){
+            request(`https://open.seriousapps.cn/product/info/product_detail.json?city_id=216&product_id=${item.product_id}&sub_product_id=${item.sub_product_id}`,function(err,response,body){
+                    if(err){
+                        throw err;
+                    }
+                    var current=JSON.parse(body);
+                    console.log(current);
+                    if(current.error_code){
+                        console.log(666);
+                        //console.log(current.error_code) ;
+                    }else{
+                        //console.log(666);
+                        //db.query('write','hotSale',JSON.parse(body).result);
+                        db.query('write','detailProduct',current);
+                    }
+                
+                    //res.send(docs);
+            })
+       
+        })
     })
 })
 

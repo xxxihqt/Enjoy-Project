@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import Swiper from 'swiper'
 import "../../assets/css/swiper-4.4.1/dist/css/swiper.css"
 
@@ -48,7 +49,12 @@ import "../../assets/css/swiper-4.4.1/dist/css/swiper.css"
     computed: {},
     mounted() {
      this.renderSelected_recommend();
-      var swiper = new Swiper('.swiper-container', {
+
+      var swiper = new Swiper('.swiper-container',
+
+       {
+         observer: true, // 修改swiper自己或子元素时,自动初始化swiper
+          observeParents: true,// 修改swiper的父元素时,自动初始化swiper
         pagination: {
           el: '.swiper-pagination',
           type: 'fraction',
@@ -58,6 +64,7 @@ import "../../assets/css/swiper-4.4.1/dist/css/swiper.css"
           prevEl: '.swiper-button-prev',
         },
       });
+      Vue.use(swiper);
     },
     methods: {
       renderSelected_recommend(){

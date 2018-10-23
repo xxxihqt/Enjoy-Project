@@ -45,6 +45,7 @@
     methods: {
         getHotData(){
             this.hotData=JSON.parse(localStorage.getItem('hotdata'));
+            this.hotData=JSON.parse(this.hotData);
             console.log(this.hotData);
         }
     },

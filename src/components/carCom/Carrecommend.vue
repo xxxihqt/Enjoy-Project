@@ -42,6 +42,8 @@
     methods: {
          renderNewProduct(){
             this.tabs=JSON.parse(localStorage.getItem("carrecommenddata"));
+            this.tabs=JSON.parse(this.tabs);
+            console.log(this.tabs);
         }
     },
 

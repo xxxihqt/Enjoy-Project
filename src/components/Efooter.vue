@@ -1,10 +1,9 @@
 <template>
     <div id="bottom-bar">
-      <a v-for="(item,idx) in bar" :key="idx" :class="[item.iclass,{active:isactive===idx}]" class="iconfont" @click="changeActive(idx)" >
+      <a v-for="(item,idx) in bar" :key="idx" :class="[item.iclass,{active:changePath==item.title}]" class="iconfont" @click="changeActive(idx)">
         <span v-text="item.name"></span>
       </a>
     </div>
-
 </template>
 
 <script>
@@ -16,33 +15,44 @@ import '../assets/icon/iconfont.css'
         bar:[{
               name:'精选',
               iclass:'icon-icon',
+              title:''
             },{
               name:'分类',
               iclass:'icon-fenlei',
+              title:'discovery'
             },{
               name:'杂志',
-              iclass:'icon-zazhiqikan'
+              iclass:'icon-zazhiqikan',
+              title:'magazine'
             },{
               name:'购物车',
-              iclass:'icon-iconset0308'
+              iclass:'icon-iconset0308',
+              title:'car'
             }
             ,{
               name:'我的',
-              iclass:'icon-wode'
+              iclass:'icon-wode',
+              title:'me'
             }],
-        isactive:0
+        isactive:''
       };
     },
 
     components: {},
 
-    computed: {},
+    computed: {
+      changePath(){
+        return  this.isactive=this.$route.path.slice(1);
+      }
+    },
 
-    mounted() {},
+    mounted() {
+      this.changeActive();
+    },
 
     methods: {
       changeActive(idx){
-        this.isactive=idx;
+        console.log(this.isactive);
         switch (idx) {
           case 0:
             location.href="#/";
