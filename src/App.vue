@@ -14,9 +14,7 @@ export default {
   data(){
     return{
       HomeArr:'',
-      HotArr:'',
-      MagazineArr:'',
-      CarRecommendArr:''
+      HotArr:''
     }
   },
   components: {
@@ -25,8 +23,6 @@ export default {
   mounted(){
     this.getHomeData();
     this.getHotData();
-    this.getMagezineData();
-    this.getCarRecommendData();
   },
   methods:{
       getHomeData:function(){
@@ -54,34 +50,7 @@ export default {
               localStorage.setItem("hotdata",JSON.stringify(self.HotArr));
             }
           })
-      },
-       getMagezineData:function(){
-         var self=this;
-          $.ajax({
-            type:'get',
-            url:'http://localhost:9999/getmagazinemsg',
-            async:true,
-            success:function(data){
-              console.log('data:',data);
-              self.MagazineArr=data;
-              self.$store.dispatch("setMagazineData",self.MagazineArr)
-              localStorage.setItem("magazinedata",JSON.stringify(self.MagazineArr));
-            }
-          })
-        },
-      getCarRecommendData:function(){
-         var self=this;
-          $.ajax({
-            type:'get',
-            url:'http://localhost:9999/getcarrecommendmsg',
-            async:true,
-            success:function(data){
-              self.CarRecommendArr=data;
-              self.$store.dispatch("setCarRecommendData",self.CarRecommendArr)
-              localStorage.setItem("carrecommenddata",JSON.stringify(self.CarRecommendArr));
-            }
-          })
-        }
+      }
   }
 }
 </script>
@@ -96,5 +65,8 @@ export default {
   }
   ul,li{
     list-style:none;
+  }
+  #app{
+    overflow: hidden;
   }
 </style>

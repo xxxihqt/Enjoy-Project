@@ -22,15 +22,23 @@ import Discovery from './routers/Discovery'
 import Magezine from './routers/Magezine'
 import Car from './routers/Car'
 import Me from './routers/Me'
-import './assets/main.css'
+import Detail from './routers/Detailpage'
+import Login from './routers/Login'
 
+import './assets/main.css'
 import './rem'
 
 /*引入UI组件*/
-import Mint from 'mint-ui';
+// 引入mint-ui
+import Mint from 'mint-ui'
+import 'mint-ui/lib/style.css'
+
+// 刷新页面时转圈圈
+import { Indicator } from 'mint-ui' 
+
 Vue.use(Mint);
 
-
+Vue.prototype.$loading = Indicator;
 
 /*声明路由*/
 const routes = [
@@ -49,6 +57,12 @@ const routes = [
   },{
     path:'/me',
     component:Me
+  },{
+    path:'/detail',
+    component:Detail
+  },{
+    path:'/login',
+    component:Login
   }
 ]
 
@@ -63,7 +77,8 @@ const store = new Vuex.Store({
     homeData: "",
     hotData:'',
     MagezineData:'',
-    CarRecommend:''
+    CarRecommend:'',
+    showfixed:true
 	},
 	/*存放到状态管理中*/
 	mutations: {
@@ -78,6 +93,9 @@ const store = new Vuex.Store({
     },
     keepCarRecommendData(state, data) {
 			state.CarRecommend = data;
+    },
+    keepShowFixed(state, data) {
+			state.showfixed = data;			
 		}
   },
   /*从子组件拿回数据，触发mutations*/
@@ -93,6 +111,9 @@ const store = new Vuex.Store({
     },
     setCarRecommendData(context, data) {
 			context.commit('keepCarRecommendData', data);
+    },
+    setShowFixed(context, data) {
+			context.commit('keepShowFixed', data);
 		}
   },
   /*把数据返回给子组件*/
@@ -108,7 +129,10 @@ const store = new Vuex.Store({
     },
     getCarRecommendData(state){
 			return state.CarRecommend;
-		}
+    },
+    getShowFixed(state){
+			return state.showfixed;
+		},
 	}
 })
 

@@ -6,7 +6,7 @@
                 <p class="title" v-text="title"></p> 
                 <p class="sub-title" v-text="desc"></p> 
                 <div class="queue">
-                  <span>1</span>/6
+                  <span>1</span>/{{computedLength}}
                 </div>
             </div> 
             <div class="swiper-container">
@@ -32,49 +32,45 @@ import Swiper from 'swiper'
 import "../../assets/css/swiper-4.4.1/dist/css/swiper.css"
 
   export default {
-    name:'',
-    props:[''],
+    props:['typeOfselectedrecommend'],
     data () {
       return {
-          name:666,
           selected_recommend:'',
           title:'',
           desc:'',
-          tabs:''
+          tabs:'',
+          lenght:0,
+          currentIdx:0
       };
     },
 
     components: {},
 
-    computed: {},
+    computed: {
+      computedLength(){
+        return this.tabs.length;
+      },
+      computedLength(){
+        return this.tabs.length;
+      }
+    },
     mounted() {
      this.renderSelected_recommend();
 
       var swiper = new Swiper('.swiper-container',
-
        {
-         observer: true, // 修改swiper自己或子元素时,自动初始化swiper
-          observeParents: true,// 修改swiper的父元素时,自动初始化swiper
-        pagination: {
-          el: '.swiper-pagination',
-          type: 'fraction',
-        },
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
+        observer: true, // 修改swiper自己或子元素时,自动初始化swiper
+        observeParents: true,// 修改swiper的父元素时,自动初始化swiper
       });
       Vue.use(swiper);
     },
     methods: {
       renderSelected_recommend(){
-        this.selected_recommend=JSON.parse(localStorage.getItem("homedata"))[0].data;
-        console.log(this.selected_recommend);
-          this.title=this.selected_recommend.group_section.title;
-          this.desc=this.selected_recommend.group_section.desc;
-          this.tabs=this.selected_recommend.tabs;
+        this.selected_recommend=this.typeOfselectedrecommend.data;
+        this.title=this.selected_recommend.group_section.title;
+        this.desc=this.selected_recommend.group_section.desc;
+        this.tabs=this.selected_recommend.tabs;
       }
-
     },
 
     watch: {}

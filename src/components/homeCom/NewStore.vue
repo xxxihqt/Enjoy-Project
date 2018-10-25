@@ -20,6 +20,7 @@
 <script>
 
   export default {
+    props:['typeOfnewstore'],
     data () {
       return{
           storeList:'',
@@ -37,15 +38,14 @@
     mounted() {
       this.renderNewStore();
     },
-
     methods: {
          renderNewStore(){
-            this.storeList=JSON.parse(localStorage.getItem("homedata"))[5].data;
+            this.storeList=this.typeOfnewstore.data;
             this.title=this.storeList.group_section.title;
             this.desc=this.storeList.group_section.desc;
             this.enjoy_url_text=this.storeList.group_section.enjoy_url_text;
             this.tabs=this.storeList.tabs;
-            /*console.log(this.storeList);*/
+            console.log(this.storeList);
         }
     },
 

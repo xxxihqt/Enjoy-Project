@@ -9,8 +9,10 @@
         <p class="sub-title" v-text="desc"></p> 
         <ul class="productlist">
             <li v-for="(item,idx) in tabs" :key="idx">
-                <img :src="item.url" alt="">
-                <p v-text="item.title" class="title"></p>
+                <a @click="Todetial(item.product_id,item.id)">
+                    <img :src="item.url" alt="">
+                </a>
+                <p v-text="item.title" class="title" @click="Todetial(item.product_id,item.id)"></p>
                 <p class="priceBox">
                     <span v-text="item.price+'/'+item.entity_name" class="price"></span>
                     <span class="original_price"><del v-text="item.original_price" ></del></span>
@@ -25,8 +27,7 @@
 <script>
 
   export default {
-    name:'',
-    props:[''],
+    props:['typeOfhotproduct'],
     data () {
       return {
           storeList:'',
@@ -47,12 +48,29 @@
 
     methods: {
          renderNewProduct(){
-            this.storeList=JSON.parse(localStorage.getItem("homedata"))[13].data;
+            this.storeList=this.typeOfhotproduct.data;
+            console.log('hot:',this.storeList);
             this.title=this.storeList.group_section.title;
             this.desc=this.storeList.group_section.desc;
             this.enjoy_url_text=this.storeList.group_section.enjoy_url_text;
             this.tabs=this.storeList.tabs;
-            /*console.log(this.storeList);*/
+        },Todetial(product_id,id){
+            var self=this;
+            $.ajax({
+                type:'get',
+                url:'http://localhost:9999/detail',
+                data:{
+                    product_id:product_id,
+                    sub_product_id:id
+                },
+                async:true,
+                success:function(data){
+                    sessionStorage.setItem("detailproduct",data);
+                    this.productId=product_id;
+                    this.subProductId=id;
+                    location.href=`#/detail?product_id=${product_id}&id=${id}`;
+                }
+            })
         }
     },
 

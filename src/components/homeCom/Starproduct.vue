@@ -21,6 +21,7 @@
 <script>
 
 export default {
+    props:['typeOfstarproduct'],
   data() {
     return {
       starproduct: "",
@@ -39,11 +40,10 @@ export default {
   },
   methods: {
     renderNewProduct(){
-            this.starproduct=JSON.parse(localStorage.getItem("homedata"))[12].data;
+            this.starproduct=this.typeOfstarproduct.data;
             this.title=this.starproduct.group_section.title;
             this.desc=this.starproduct.group_section.desc;
             this.tabs=this.starproduct.tabs;
-            /*console.log(this.storeList);*/
         }
   },
 

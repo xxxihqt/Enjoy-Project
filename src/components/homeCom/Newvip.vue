@@ -39,6 +39,7 @@
 <script>
 
   export default {
+    props:['typeOfnewvip'],
     data () {
       return {
         newvipContent:[],
@@ -64,16 +65,18 @@
     },
     methods: {
       renderNewVipContent(){
-        this.newvipContent=JSON.parse(localStorage.getItem("homedata"))[1];
+        this.newvipContent=this.typeOfnewvip[1];
         this.title=this.newvipContent.data.group_section.title;
         this.imgArr=this.newvipContent.data.tabs;
 
-        this.littleContent=JSON.parse(localStorage.getItem("homedata"))[2];
+        this.littleContent=this.typeOfnewvip[2];
         this.littleTittle=this.littleContent.data.group_section.title;
         this.classifyArr=this.littleContent.data.tabs;
-        this.newslists=JSON.parse(localStorage.getItem("homedata"))[3].data;
+
+        this.newslists=this.typeOfnewvip[3].data;
         this.newsImg=this.newslists.group_section.url;
-        this.productMsg=JSON.parse(localStorage.getItem("homedata"))[4].data.tabs;
+
+        this.productMsg=this.typeOfnewvip[4].data.tabs;
       }
     }
 

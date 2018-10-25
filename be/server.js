@@ -27,69 +27,73 @@ app.get('/gethotmsg',function(req,res){
 
 app.get('/getmagazinemsg',function(req,res){
     res.append("Access-Control-Allow-Origin", "*");
+  
+    db.query('sort','magazineData',{},{"begin_at":-1},null,function(docs){
+        var page=req.query.page*1;
+        var qty=req.query.qty*1;
+        var newDocs=docs.slice((page-1)*qty,qty);
+        console.log(page,qty);
 
-    db.query('find','magazineData',{},null,function(docs){
-        //console.log(docs.length);
         var obj={
-        group_section:{desc: "· 一点关于吃喝的人生经验 ·"},
-        tabs:docs
-        }
-        res.send(obj);
-    })
-        /*for(let i=0;i<11;i++){
-            request(`https:/\/open.seriousapps.cn/hub/home/v1/article/list.json?city=216&page=${i}`,function(err,response,body){
-                if(err){
-                    //throw err;
-               }
-                db.query('write','magazineData',JSON.parse(body).tabs);
-                //res.send(body)
-            })
-       } */    
+            group_section:{desc: "· 一点关于吃喝的人生经验 ·"},
+            tabs:newDocs
+            }
+            res.send(obj);
+    });    
 })
 
 app.get('/getcarrecommendmsg',function(req,res){
     res.append("Access-Control-Allow-Origin", "*");
-    request('https://open.seriousapps.cn/cart/cart_recommend_product.json?city_id=216&device_token=54a4nwjy-ugjh-zfn0-1bqp-yzpx9954lyz8&lat=23.17624131944444&lng=113.3380867513021',function(err,response,body){
-        if(err){
-            throw err;
-        }
-        //console.log(body);
-        res.send(body);
+    db.query('find','hotSale',{},null,null,function(docs){
+        var newArr=docs.slice(0,10);
+        res.send(newArr);
     })
 })
 
 app.get('/getproduct',function(req,res){
     res.append("Access-Control-Allow-Origin", "*");
 
-        db.query('find','detailProduct',{},null,function(docs){
+        db.query('find','detailProduct',{},null,null,function(docs){
             res.send(docs);
     }); 
 })
 
 app.get('/hotsale',function(req,res){
     res.append("Access-Control-Allow-Origin", "*");
-    db.query('find','hotSale',{},null,function(docs){
-        docs.forEach(function(item){
+    db.query('find','detailProduct',{},null,null,function(docs){
+        /*docs.forEach(function(item){
             request(`https://open.seriousapps.cn/product/info/product_detail.json?city_id=216&product_id=${item.product_id}&sub_product_id=${item.sub_product_id}`,function(err,response,body){
                     if(err){
                         throw err;
                     }
                     var current=JSON.parse(body);
-                    console.log(current);
                     if(current.error_code){
-                        console.log(666);
-                        //console.log(current.error_code) ;
                     }else{
-                        //console.log(666);
-                        //db.query('write','hotSale',JSON.parse(body).result);
                         db.query('write','detailProduct',current);
                     }
                 
-                    //res.send(docs);
             })
-       
-        })
+        })*/
+        res.send(docs);       
     })
 })
+
+app.get('/detail',function(req,res){
+    res.append("Access-Control-Allow-Origin", "*");
+    //db.query('find','detailProduct',{},null,null,function(docs){
+        //docs.forEach(function(item){
+            var product_id=req.query.product_id;
+            var sub_product_id=req.query.sub_product_id;
+            request(`https://api.ricebook.com/product/info/product_detail.json?product_id=${product_id}&sub_product_id=${sub_product_id}`,function(err,response,body){
+                    if(err){
+                        throw err;
+                    }
+                    res.send(body);          
+            })
+        //})
+    //})
+})
+
+
 
 app.listen(9999);

@@ -1,5 +1,5 @@
 <template>
-    <div id="bottom-bar">
+    <div id="bottom-bar" v-if="changeShow">
       <a v-for="(item,idx) in bar" :key="idx" :class="[item.iclass,{active:changePath==item.title}]" class="iconfont" @click="changeActive(idx)">
         <span v-text="item.name"></span>
       </a>
@@ -43,6 +43,9 @@ import '../assets/icon/iconfont.css'
     computed: {
       changePath(){
         return  this.isactive=this.$route.path.slice(1);
+      },
+      changeShow(){
+        return this.$store.getters.getShowFixed;
       }
     },
 

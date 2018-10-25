@@ -35,8 +35,7 @@ import Swiper from 'swiper'
 import "../../assets/css/swiper-4.4.1/dist/css/swiper.css"
 
   export default {
-    name:'',
-    props:[''],
+    props:['typeOfexpresstohome'],
     data () {
       return {
           selected_recommend:'',
@@ -65,13 +64,12 @@ import "../../assets/css/swiper-4.4.1/dist/css/swiper.css"
     },
     methods: {
        renderNewProduct(){
-            this.storeList=JSON.parse(localStorage.getItem("homedata"))[10].data;
+            this.storeList=this.typeOfexpresstohome[10].data;
             this.title=this.storeList.group_section.title;
             this.desc=this.storeList.group_section.desc;
             this.enjoy_url_text=this.storeList.group_section.enjoy_url_text;
             this.tabs=this.storeList.tabs;
-            this.littleIconTabs=JSON.parse(localStorage.getItem("homedata"))[11].data.tabs;
-            /*console.log(this.storeList);*/
+            this.littleIconTabs=this.typeOfexpresstohome[11].data.tabs;
         }
     },
 

@@ -21,6 +21,7 @@
 <script>
 
   export default {
+    props:['typeOflasthome'],
     data () {
       return {
           invitImg:'',
@@ -40,11 +41,10 @@
 
     methods: {
         renderNewProduct(){
-            this.invitImg=JSON.parse(localStorage.getItem("homedata"))[16].data.group_section.url;
-            this.storeList=JSON.parse(localStorage.getItem("homedata"))[17].data;
+            this.invitImg=this.typeOflasthome[16].data.group_section.url;
+            this.storeList=this.typeOflasthome[17].data;
             this.title=this.storeList.group_section.title;
             this.tabs=this.storeList.tabs;
-            /*console.log(this.storeList);*/
         }
     },
 

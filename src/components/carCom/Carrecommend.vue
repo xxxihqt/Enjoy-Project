@@ -7,8 +7,8 @@
         </p> 
         <ul class="productlist">
             <li v-for="(item,idx) in tabs" :key="idx">
-                <img :src="item.product_image" alt="">
-                <p v-text="item.short_name" class="title"></p>
+                <a><img :src="item.product_image" alt=""></a>
+                <a><p v-text="item.short_name" class="title"></p></a>
                 <p class="priceBox">
                     <span v-text="item.price+'/'+item.show_entity_name" class="price"></span>
                 </p>
@@ -36,14 +36,23 @@
     computed: {},
 
     mounted() {
-        this.renderNewProduct();
+        this.getCarRecommendData();
     },
 
     methods: {
-         renderNewProduct(){
-            this.tabs=JSON.parse(localStorage.getItem("carrecommenddata"));
-            this.tabs=JSON.parse(this.tabs);
-            console.log(this.tabs);
+        getCarRecommendData:function(){
+         var self=this;
+          $.ajax({
+            type:'get',
+            url:'http://localhost:9999/getcarrecommendmsg',
+            async:true,
+            success:function(data){
+                console.log(data);
+              self.tabs=data;
+              self.$store.dispatch("setCarRecommendData",self.tabs)
+              localStorage.setItem("carrecommenddata",JSON.stringify(self.tabs));
+            }
+          })
         }
     },
 

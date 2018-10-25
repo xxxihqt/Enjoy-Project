@@ -2,19 +2,21 @@
   <div>
     <eheader></eheader>
     <div  id="home">
-        <selectedrecommend></selectedrecommend>
-        <newvip></newvip>
-        <newstore></newstore>
-        <newproduct></newproduct>
-        <hotsale></hotsale>
-        <mealhere></mealhere>
-        <happytoplay></happytoplay>
-        <expresstohome></expresstohome>
-        <starproduct></starproduct>
-        <hotproduct></hotproduct>
-        <selectedsnacks></selectedsnacks>
-        <dreamstore></dreamstore>
-        <lasthome></lasthome>
+        <selectedrecommend :typeOfselectedrecommend='allHomeProduct[0]'></selectedrecommend>
+        <newvip :typeOfnewvip='allHomeProduct'></newvip>
+        <newstore :typeOfnewstore='allHomeProduct[5]'></newstore>
+        <keep-alive include="newproduct">
+          <newproduct :typeOfnewproduct='allHomeProduct[6]'></newproduct>
+        </keep-alive>
+        <hotsale :typeOfhotsale='allHomeProduct[7]'></hotsale>
+        <mealhere :typeOfmealhere='allHomeProduct[8]'></mealhere>
+        <happytoplay :typeOfhappytoplay='allHomeProduct[9]'></happytoplay>
+        <expresstohome :typeOfexpresstohome='allHomeProduct'></expresstohome>
+        <starproduct :typeOfstarproduct='allHomeProduct[12]'></starproduct>
+        <hotproduct :typeOfhotproduct='allHomeProduct[13]'></hotproduct>
+        <selectedsnacks :typeOfselectedsnacks='allHomeProduct[14]'></selectedsnacks>
+        <dreamstore :typeOfdreamstore='allHomeProduct[15]'></dreamstore>
+        <lasthome :typeOflasthome='allHomeProduct'></lasthome>
     </div>
   </div>
 </template>
@@ -39,10 +41,9 @@ import lasthome from '../components/homeCom/LastHome'
 
 
   export default {
-    props:[''],
     data () {
       return {
-          name:'home',
+          allHomeProduct:''
       };
     },
     components: {
@@ -61,10 +62,17 @@ import lasthome from '../components/homeCom/LastHome'
       dreamstore,
       lasthome
     },
-    mounted:function(){
+    computed: {
+      
+    },
+    created:function(){
+      this.AllContent();
     },
     methods: {
-      
+      AllContent(){
+        this.allHomeProduct=JSON.parse(localStorage.getItem("homedata"));
+        this.allHomeProduct=JSON.parse(this.allHomeProduct);
+      }
     },
     watch:{}
   }

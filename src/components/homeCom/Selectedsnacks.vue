@@ -26,8 +26,7 @@
 <script>
 
   export default {
-    name:'',
-    props:[''],
+    props:['typeOfselectedsnacks'],
     data () {
       return {
           storeList:'',
@@ -48,12 +47,11 @@
 
     methods: {
          renderNewProduct(){
-            this.storeList=JSON.parse(localStorage.getItem("homedata"))[14].data;
+            this.storeList=this.typeOfselectedsnacks.data;
             this.title=this.storeList.group_section.title;
             this.desc=this.storeList.group_section.desc;
             this.enjoy_url_text=this.storeList.group_section.enjoy_url_text;
             this.tabs=this.storeList.tabs;
-            /*console.log(this.storeList);*/
         }
     },
 
