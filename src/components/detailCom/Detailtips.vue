@@ -3,11 +3,11 @@
       <div class="littleTipsBox">
     <h4 v-text="product_type===1?topic.product_typeOne:topic.product_typeZero"></h4>
     <ul class="containers">
-        <span class="express" v-for="(item,idx) in express" :key="idx" v-if="product_type===1">
+        <span class="express" v-for="(item,idx) in express" :key="item.text" v-if="product_type===1">
             <img :src="item.icon" alt="">
             <span v-text="item.text"></span>
         </span>
-        <li v-for="(item,idx) in contents" :key="idx" v-text="item.text"></li>
+        <li v-for="(item,idx) in contents" :key="idx+1" v-text="item.text"></li>
         <p v-for="item in phone" :key="item" v-text="item" class="phone" v-if="product_type===0"></p>
     </ul>
     </div>

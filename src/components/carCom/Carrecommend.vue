@@ -7,8 +7,8 @@
         </p> 
         <ul class="productlist">
             <li v-for="(item,idx) in tabs" :key="idx">
-                <a><img :src="item.product_image" alt=""></a>
-                <a><p v-text="item.short_name" class="title"></p></a>
+                <a @click="Todetial(item.product_id,item.sub_product_id)"><img :src="item.product_image" alt=""></a>
+                <p v-text="item.short_name" class="title" @click="Todetial(item.product_id,item.sub_product_id)"></p>
                 <p class="priceBox">
                     <span v-text="item.price+'/'+item.show_entity_name" class="price"></span>
                 </p>
@@ -47,12 +47,28 @@
             url:'http://localhost:9999/getcarrecommendmsg',
             async:true,
             success:function(data){
-                console.log(data);
               self.tabs=data;
               self.$store.dispatch("setCarRecommendData",self.tabs)
-              localStorage.setItem("carrecommenddata",JSON.stringify(self.tabs));
+              sessionStorage.setItem("carrecommenddata",JSON.stringify(self.tabs));
             }
           })
+        },
+        Todetial(product_id,id){
+            var self=this;
+            $.ajax({
+                type:'get',
+                url:'http://localhost:9999/detail',
+                data:{
+                    product_id:product_id,
+                    sub_product_id:id
+                },
+                async:true,
+                success:function(data){
+                    data.qty=0;
+                    sessionStorage.setItem("detailproduct",JSON.stringify(data));
+                    self.$router.push({ name: 'detail', query: { product_id: product_id,sub_product_id:id }});
+                }
+            })
         }
     },
 

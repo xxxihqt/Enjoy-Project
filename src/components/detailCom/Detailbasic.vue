@@ -41,7 +41,8 @@
           basic:'',
           product_images:'',
           isFixed:false,
-          isFixedTittle:false
+          isFixedTittle:false,
+          pathName:this.$route.query.product_id
         
       };
     },
@@ -53,7 +54,8 @@
     created(){
         this.render();
     },
-    beforeMount() {},
+    beforeMount() {
+    },
 
     mounted() {
         var swiper = new Swiper('.swiper-container', {
@@ -78,13 +80,13 @@
         },
         back(){
             this.$store.dispatch('setShowFixed',true);
-            location.href="#/";
+           // this.$router.push(this.$route.query.redirect); 
+            this.$router.go(-1);
+            //this.$router.push({ name: 'home'});
         },
          handleScroll () {  
             this.$nextTick(() => {
                 let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;  
-                //let headerTop = document.getElementById("header");  
-                //console.log(scrollTop+'------------')  
                 if (scrollTop > 500) {  
                     this.isFixed = true;  
                     this.isFixedTittle = true;  
@@ -95,8 +97,13 @@
             })	
         }
     },
-    watch: {}
-
+    watch: {
+       $route(_new,_old){
+           if(_new){
+               this.render();
+           }
+       }
+    }
   }
 
 </script>
@@ -168,6 +175,7 @@
                 padding:0px 20px;
                 width: 100%;
                 border-bottom:5px solid #000;
+                box-sizing: border-box;
                 .desc{
                     font-weight:100;
                     font-size: 24px;

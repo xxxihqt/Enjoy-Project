@@ -9,8 +9,10 @@
         <p class="sub-title" v-text="desc"></p> 
         <ul class="productlist">
             <li v-for="(item,idx) in tabs" :key="idx">
-                <img :src="item.url" alt="">
-                <p v-text="item.desc" class="title"></p>
+                <a @click="Todetial(item.product_id,item.id)">
+                    <img :src="item.url" alt="">
+                </a>
+                <p v-text="item.desc" class="title" @click="Todetial(item.product_id,item.id)"></p>
                 <p v-text="item.title" class="desc"></p>
                 <p class="priceBox">
                     <span v-text="item.price+'/'+item.entity_name" class="price"></span>
@@ -52,6 +54,22 @@
             this.desc=this.storeList.group_section.desc;
             this.enjoy_url_text=this.storeList.group_section.enjoy_url_text;
             this.tabs=this.storeList.tabs;
+        },Todetial(product_id,id){
+            var self=this;
+            $.ajax({
+                type:'get',
+                url:'http://localhost:9999/detail',
+                data:{
+                    product_id:product_id,
+                    sub_product_id:id
+                },
+                async:true,
+                success:function(data){
+                    data.qty=0;
+                    sessionStorage.setItem("detailproduct",JSON.stringify(data));
+                    self.$router.push({ name: 'detail', query: { product_id: product_id,sub_product_id:id }});                  
+                }
+            })
         }
     },
 

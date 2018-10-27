@@ -45,7 +45,6 @@
             this.desc=this.storeList.group_section.desc;
             this.enjoy_url_text=this.storeList.group_section.enjoy_url_text;
             this.tabs=this.storeList.tabs;
-            console.log(this.storeList);
         }
     },
 

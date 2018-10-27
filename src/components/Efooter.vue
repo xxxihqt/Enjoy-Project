@@ -1,8 +1,8 @@
 <template>
     <div id="bottom-bar" v-if="changeShow">
-      <a v-for="(item,idx) in bar" :key="idx" :class="[item.iclass,{active:changePath==item.title}]" class="iconfont" @click="changeActive(idx)">
+      <span v-for="(item,idx) in bar" :key="idx" :class="[item.iclass,{active:changePath==item.title}]" class="iconfont" @click="changeActive(idx)">
         <span v-text="item.name"></span>
-      </a>
+      </span>
     </div>
 </template>
 
@@ -42,7 +42,7 @@ import '../assets/icon/iconfont.css'
 
     computed: {
       changePath(){
-        return  this.isactive=this.$route.path.slice(1);
+        return  this.$route.path.slice(1);
       },
       changeShow(){
         return this.$store.getters.getShowFixed;
@@ -55,22 +55,22 @@ import '../assets/icon/iconfont.css'
 
     methods: {
       changeActive(idx){
-        console.log(this.isactive);
+        //console.log(this.isactive);
         switch (idx) {
           case 0:
-            location.href="#/";
+            location.href="/";
             break;
           case 1:
-            location.href="#/discovery"
+            location.href="/discovery"
             break;
           case 2:
-            location.href="#/magazine"
+            location.href="/magazine"
             break;
           case 3:
-            location.href="#/car"
+            location.href="/car"
             break;
           case 4:
-            location.href="#/me"
+            location.href="/me"
             break;
         }
       }
@@ -91,7 +91,7 @@ import '../assets/icon/iconfont.css'
     height: 98px;
     border-top: 1px solid #e0e0e0;
     z-index:10000;
-    a{
+    span{
       flex:1;
       text-align:center;
       font-size:40px;

@@ -24,6 +24,7 @@
     import heightlight from '../components/detailCom/Heightlight'
 
   export default {
+    inject:['reload'],
     data () {
       return {
       };
@@ -44,18 +45,26 @@
     computed: {
     },
     created(){
-        this.$store.dispatch('setShowFixed',false);
+            
+        $(window).scrollTop(0);
+
     },
     beforeMount(){
       $(window).scrollTop(0);
     },
     mounted() {
+
     },
     methods: {
     },
 
-    watch: {}
-
+    watch: {
+       $route(_new,_old){
+           if(_new){
+              this.reload();
+           }
+       }
+    }
   }
 
 </script>

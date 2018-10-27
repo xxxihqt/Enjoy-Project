@@ -9,29 +9,49 @@ const dbName = 'enjoy';
 // Redis
 
 function query(type,tablename, params, key,updateParams,callback) {
-	MongoClient.connect(url, function(err, client) {
+	MongoClient.connect(url,{useNewUrlParser:true}, function(err, client) {
 		assert.equal(null, err);
 		console.log("Connected successfully to server");
 		const db = client.db(dbName);
 		if(type=='find'){
-			//查询
-			db.collection(tablename).find(params).toArray(function(err, docs) {
-				assert.equal(err, null);
-				callback(docs);
-				client.close();
-			});
+			if(key){
+				db.collection(tablename).find(params,key).toArray(function(err, docs) {
+					assert.equal(err, null);
+					callback(docs);
+					client.close();
+				});
+			}else{
+				//查询
+				db.collection(tablename).find(params).toArray(function(err, docs) {
+					assert.equal(err, null);
+					callback(docs);
+					client.close();
+				});
+			}	
 		}
 		if(type=='write'){
 			//写入
-			db.collection(tablename).insert(
-				params, function(err, result) {
-			});
+			if(typeof params===Array){
+				db.collection(tablename).insertMany(
+					params, function(err, result) {
+						assert.equal(err, null);
+						callback(result);
+				});
+			}else{
+				db.collection(tablename).insertOne(
+					params, function(err, result) {
+					assert.equal(err, null);
+					callback(result);
+				});
+			}
+			
 		}
 		if(type=='update'){
 			//更新
 			db.collection(tablename).updateOne(params
-                , { $set: updateParams }, function(err, result) {
-
+                ,updateParams, function(err, result) {
+					assert.equal(err, null);
+					callback(result);
             });  
 		}
 		if(type=='sort'){

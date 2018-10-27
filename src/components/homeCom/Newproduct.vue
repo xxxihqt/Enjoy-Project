@@ -8,7 +8,7 @@
         <p class="sub-title" v-text="desc"></p> 
         <ul class="productlist">
             <li v-for="(item,idx) in tabs" :key="idx">
-                <a @click="Todetial(item.product_id,item.id)"><img :src="item.url" alt=""></a>
+                <img :src="item.url" alt="" @click.stop="Todetial(item.product_id,item.id)">
                 <p v-text="item.title" class="title" @click="Todetial(item.product_id,item.id)"></p>
                 <p class="priceBox">
                     <span v-text="item.price+'/'+item.entity_name" class="price"></span>
@@ -64,12 +64,12 @@
                 },
                 async:true,
                 success:function(data){
-                    sessionStorage.setItem("detailproduct",data);
-                    this.productId=product_id;
-                    this.subProductId=id;
-                    location.href=`#/detail?product_id=${product_id}&id=${id}`;
+                    data.qty=0;
+                    sessionStorage.setItem("detailproduct",JSON.stringify(data));
+                    self.$router.push({ name: 'detail', query: { product_id: product_id,sub_product_id:id }});
                 }
             })
+
         }
     }
   }

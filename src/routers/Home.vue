@@ -9,7 +9,7 @@
           <newproduct :typeOfnewproduct='allHomeProduct[6]'></newproduct>
         </keep-alive>
         <hotsale :typeOfhotsale='allHomeProduct[7]'></hotsale>
-        <mealhere :typeOfmealhere='allHomeProduct[8]'></mealhere>
+        <!--<mealhere :typeOfmealhere='allHomeProduct[8]'></mealhere> -->
         <happytoplay :typeOfhappytoplay='allHomeProduct[9]'></happytoplay>
         <expresstohome :typeOfexpresstohome='allHomeProduct'></expresstohome>
         <starproduct :typeOfstarproduct='allHomeProduct[12]'></starproduct>
@@ -30,7 +30,7 @@ import newvip from '../components/homeCom/Newvip'
 import newstore from '../components/homeCom/NewStore'
 import newproduct from '../components/homeCom/Newproduct'
 import hotsale from '../components/homeCom/HotSale'
-import mealhere from '../components/homeCom/Mealhere'
+//import mealhere from '../components/homeCom/Mealhere'
 import happytoplay from '../components/homeCom/Happytoplay'
 import expresstohome from '../components/homeCom/Expresstohome'
 import starproduct from '../components/homeCom/Starproduct'
@@ -53,7 +53,7 @@ import lasthome from '../components/homeCom/LastHome'
       newstore,
       newproduct,
       hotsale,
-      mealhere,
+      //mealhere,
       happytoplay,
       expresstohome,
       starproduct,
@@ -65,8 +65,9 @@ import lasthome from '../components/homeCom/LastHome'
     computed: {
       
     },
-    created:function(){
+    created(){
       this.AllContent();
+      this.$store.dispatch('setShowFixed',true);
     },
     methods: {
       AllContent(){

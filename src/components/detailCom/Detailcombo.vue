@@ -4,10 +4,12 @@
     <ul>
         <li v-for="(item,idx) in recommends" :key="idx">
             <div class="imgBox"> 
-                <img :src="item.product_image_url" alt="">
+                <a @click="Todetial(item.product_id,item.id)">
+                    <img :src="item.product_image_url" alt="">
+                </a>
             </div>
             <div class="textBox">
-                <p class="title" v-text="item.product_name"></p>
+                <p class="title" v-text="item.product_name" @click="Todetial(item.product_id,item.id)"></p>
                 <p class="priceBox">
                     <span class="price" v-text="item.price+'元/'"></span>
                     <span class="show_entity_name" v-text="item.show_entity_name"></span>
@@ -58,6 +60,28 @@
                     this.recommends=this.data[i].data.recommend;
                 }
             }
+        },
+        Todetial(product_id,id){
+            var self=this;
+            $.ajax({
+                type:'get',
+                url:'http://localhost:9999/detail',
+                data:{
+                    product_id:product_id,
+                    sub_product_id:id
+                },
+                async:true,
+                success:function(data){
+                    data.qty=0;
+                    sessionStorage.setItem("detailproduct",JSON.stringify(data));
+                    if(id){
+                        self.$router.push({ name: 'detail', params: { product_id: product_id,sub_product_id:id }});
+                    }else{
+                        self.$router.push({ name: 'detail', query: { product_id: product_id}});
+                    }
+                    
+                }
+            })
         }
     },
 

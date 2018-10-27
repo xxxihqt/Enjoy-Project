@@ -7,20 +7,20 @@
             </a>
         </p>
         <p class="username">
-            <input type="text" placeholder="用户名" class="">
+            <input type="text" placeholder="用户名" class="" v-model="username" >
         </p>
         <p class="password">
-            <input type="password" placeholder="用户名" class="">
+            <input type="password" placeholder="密码" class="" v-model="password">
         </p>
         <p class="totp">
-            <input type="tel" placeholder="验证码" class="off"> 
-            <span style="display: none;">X</span> 
+            <input type="tel" placeholder="验证码" class="off" v-model="realCode"> 
             <a class="off" v-text="mycode" @click="randomCode"></a>
+            <span style="display: block;" class="error" v-text="error"></span> 
         </p> <!----> 
         <div id="captcha">
         </div> 
-        <a class="goLogin" v-if="!isShow">登录</a> 
-        <a class="goReg" v-if="isShow">注册</a> 
+        <a class="goLogin" v-if="!isShow" @click="toCheck('login')">登录</a> 
+        <a class="goReg" v-if="isShow" @click="toCheck('reg')">注册</a> 
         <div class="tips" @click="changeShow">
             <p v-text="isShow?tips.login:tips.reg">立即注册</p>
         </div>
@@ -39,7 +39,12 @@
               reg:'立即注册'
           },
           isShow:false,
-          mycode:''
+          mycode:'',
+          username:'',
+          password:'',
+          realCode:'',
+          error:'',
+          user_data:''
       }
     },
     components: {},
@@ -51,20 +56,58 @@
     beforeMount() {},
 
     mounted() {
-        this.randomCode(4);
+        this.randomCode();
     },
 
     methods: {
         changeShow(){
-          this.isShow=!this.isShow;
+          this.isShow = !this.isShow;
+          this.username='';
+          this.password='';
+          this.realCode='';
         },
-        randomCode(n){
-            for(var i=0;i<n;i++){
-                this.mycode += parseInt(Math.random()*10);
+        randomCode(){
+            var newCode = '';
+            for(var i=0;i<4;i++){
+                newCode += parseInt(Math.random()*10);
+            }
+            this.mycode = newCode;
+        },
+        toCheck(choice){
+            if(this.realCode==this.mycode && this.username !='' && this.password !=''){
+                var self = this;
+                $.ajax({
+                    type:"post",
+                    url:'http://localhost:9999/user',
+                    async:true,
+                    data:{
+                        choice:choice,
+                        username:this.username,
+                        password:this.password
+                    },
+                    success:function(data){
+                        console.log(data);  
+                        if(data.status===0){
+                            self.error=data.data;
+                        }
+                        if(data.ok || data.status===1){
+                            self.user_data=data;
+                            console.log(self.user_data);
+                            sessionStorage.setItem('name',data.name);
+                            sessionStorage.setItem('_id',data._id);
+                            self.$router.push(self.$route.query.redirect); 
+                        }
+                        
+                    }
+                })
+            }
+            if(this.username=='' || this.password==''){
+                this.error='用户名或密码不能为空';
+            }else if(this.realCode != this.mycode){
+                this.error='验证码错误';
             }
         }
     },
-
     watch: {}
 
   }
@@ -114,6 +157,11 @@
                     color: #2c3038;
                     border: 2px solid #e0e0e0;
                     font-size: 26px;
+                }
+                .error{
+                    font-size:24px;
+                    color:red;
+                    margin-top:20px;
                 }
             }
            .goLogin,.goReg{

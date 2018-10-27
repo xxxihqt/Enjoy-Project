@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <router-view v-if="isRouterAlive"></router-view>
     <efooter></efooter>
   </div>
 </template>
@@ -11,10 +11,16 @@ import efooter from './components/Efooter'
 
 export default {
   name: 'app',
+  provide(){
+    return{
+      reload:this.reload
+    }
+  },
   data(){
     return{
       HomeArr:'',
-      HotArr:''
+      HotArr:'',
+      isRouterAlive:true
     }
   },
   components: {
@@ -50,6 +56,12 @@ export default {
               localStorage.setItem("hotdata",JSON.stringify(self.HotArr));
             }
           })
+      },
+      reload:function(){
+        this.isRouterAlive=false;
+        this.$nextTick(function(){
+          this.isRouterAlive=true;
+        })
       }
   }
 }

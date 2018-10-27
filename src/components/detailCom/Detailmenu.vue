@@ -41,7 +41,6 @@
                 if(newArr[i].data.contents){
                     this.basic=newArr[i].data.basic;
                     newArr=newArr[i].data.contents;
-                    console.log('666',newArr);
                     for(let j=0;j<newArr.length;j++){
                         if(newArr[j].sub_title){
                             this.data=newArr;
@@ -54,8 +53,13 @@
         }
     },
 
-    watch: {}
-
+    watch: {
+       $route(_new,_old){
+           if(_new){
+              // this.render();
+           }
+       }
+    }
   }
 
 </script>

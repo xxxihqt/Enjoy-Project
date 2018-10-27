@@ -8,7 +8,7 @@
         </p> 
         <p class="sub-title" v-text="desc"></p> 
         <ul class="productlist">
-            <li v-for="(item,idx) in tabs" :key="idx">
+            <li v-for="(item,idx) in tabs" :key="idx+1">
                 <a @click="Todetial(item.product_id,item.id)">
                     <img :src="item.url" alt="">
                 </a>
@@ -65,10 +65,9 @@
                 },
                 async:true,
                 success:function(data){
-                    sessionStorage.setItem("detailproduct",data);
-                    this.productId=product_id;
-                    this.subProductId=id;
-                    location.href=`#/detail?product_id=${product_id}&id=${id}`;
+                    data.qty=0;
+                    sessionStorage.setItem("detailproduct",JSON.stringify(data));
+                    self.$router.push({ name: 'detail', query: { product_id: product_id,sub_product_id:id }});                  
                 }
             })
         }

@@ -38,7 +38,6 @@
     computed: {
     },
     created(){
-      console.log( this.data);
       this.render();
     },
     mounted() {
@@ -82,8 +81,9 @@
       }
     }
     .reasonBox{
-        padding:0px 20px;
+        padding:0px 20px 20px 20px;
         list-style:auto;
+        border-bottom:1px solid #ccc;
       li{
         list-style:auto;
         font-size:12px;
@@ -96,7 +96,6 @@
       padding:20px;
       height: 90px;
       .text{
-        border-top:1px solid #ccc;
         padding:20px 0px;
         width:70%;
         float:left;

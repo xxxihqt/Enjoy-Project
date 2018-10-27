@@ -45,7 +45,6 @@
     mounted() {
         this.renderNewProduct();
     },
-
     methods: {
          renderNewProduct(){
             this.storeList=this.typeOfmealhere.data;
@@ -56,11 +55,24 @@
             this.tabs=this.storeList.tabs;
         },
         Todetial(product_id,id){
+            var self=this;
+            $.ajax({
+                type:'get',
+                url:'http://localhost:9999/detail',
+                data:{
+                    product_id:product_id,
+                    sub_product_id:id
+                },
+                async:true,
+                success:function(data){
+                    data.qty=0;
+                    sessionStorage.setItem("detailproduct",JSON.stringify(data));
+                    self.$router.push({ name: 'detail', params: { product_id: product_id,sub_product_id:id }});                  
+                }
+            })
         }
     },
-
     watch: {}
-
   }
 
 </script>

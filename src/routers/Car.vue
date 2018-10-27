@@ -23,7 +23,9 @@
     },
 
     computed: {},
-
+    created(){
+        this.$store.dispatch('setShowFixed',true);
+    },
     beforeMount() {},
 
     mounted() {},

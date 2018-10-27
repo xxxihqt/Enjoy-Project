@@ -6,7 +6,7 @@
                  <img id="logo" alt="ENJOY" :src="logo"> 
                  <span id="city">北京</span> </div>  
             <div id="right" class="header-item">
-                 <a class="item-search" href="/account/login">登录</a>  
+                 <a class="item-search" href="/account/login" @click="toLogin" v-if="showLogin">登录</a>  
                  <a class="iconfont icon-seach" @click="showSeachPanel"></a> 
             </div>
             <div class="logined-panel" style="display: none;">
@@ -29,7 +29,8 @@
     data () {
       return {
           logo:require('../imgs/logo1.png'),
-          isShowSeachPanel:false
+          isShowSeachPanel:false,
+          showLogin:true
       };
     },
 
@@ -37,13 +38,20 @@
 
     computed: {},
 
-    beforeMount() {},
+    beforeMount() {
+        if(sessionStorage.getItem('name') && sessionStorage.getItem('_id')){
+            this.showLogin=false;
+        }
+    },
 
     mounted() {},
 
     methods: {
         showSeachPanel(){
             this.isShowSeachPanel=!this.isShowSeachPanel;
+        },
+        toLogin(){
+            location.href="#/login"
         }
     },
 
