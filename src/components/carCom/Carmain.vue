@@ -8,7 +8,7 @@
                 <ul class="car-list">
                     <li class="clearfix" v-for="(item,idx) in userProduct" :key="idx"> 
                         <div class="sel-wrapper clearfix">
-                            <span class="sel iconfont on"></span>
+                            <span class="sel iconfont on icon-gouxuan"></span>
                         </div> 
                         <div class="desc clearfix">
                             <div class="image">
@@ -94,6 +94,7 @@
 
 </script>
 <style lang='scss' scoped>
+    @import '../../assets/font_ex4wr4ozfae/iconfont.css';
     .CarBox{
         .car-header{
             text-align: center;
