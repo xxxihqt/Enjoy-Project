@@ -19,76 +19,84 @@
 </template>
 
 <script>
+export default {
+  props: ["typeOflasthome"],
+  data() {
+    return {
+      invitImg: "",
+      storeList: "",
+      title: "",
+      tabs: "",
+      logoUrl: require("../..//imgs/logo3.png")
+    };
+  },
 
-  export default {
-    props:['typeOflasthome'],
-    data () {
-      return {
-          invitImg:'',
-          storeList:'',
-          title:'',
-          tabs:'',
-          logoUrl:require('../..//imgs/logo3.png')
-      };
-    },
+  components: {},
 
-    components: {},
+  computed: {},
+  mounted() {
+    this.renderNewProduct();
+  },
 
-    computed: {},
-    mounted() {
-        this.renderNewProduct();
-    },
+  methods: {
+    renderNewProduct() {
+      if (
+        Object.prototype.toString.call(this.typeOflasthome) ===
+        "[object String]"
+      ) {
+        this.invitImg = eval(this.typeOflasthome)[16].data.group_section.url;
+        this.storeList = eval(this.typeOflasthome)[17].data;
+        this.title = this.storeList.group_section.title;
+        this.tabs = this.storeList.tabs;
+      } else {
+        this.typeOflasthome.then(typeOflasthome => {
+          this.invitImg = JSON.parse(typeOflasthome)[16].data.group_section.url;
+          this.storeList = JSON.parse(typeOflasthome)[17].data;
+          this.title = this.storeList.group_section.title;
+          this.tabs = this.storeList.tabs;
+        });
+      }
+    }
+  },
 
-    methods: {
-        renderNewProduct(){
-            this.invitImg=this.typeOflasthome[16].data.group_section.url;
-            this.storeList=this.typeOflasthome[17].data;
-            this.title=this.storeList.group_section.title;
-            this.tabs=this.storeList.tabs;
-        }
-    },
-
-    watch: {}
-
-  }
-
+  watch: {}
+};
 </script>
 <style lang='scss' scoped>
-    .lastHomeContainer{
-        padding:0px 40px;
-        .invitImg{
-            img{
-                width: 670px;
-            }
-        }
-        .specialColumnist{
-            position: relative;
-            .title {
-                font-size: 0.56rem;
-                font-weight: 600;
-                color: #191919;
-                margin-bottom: 20px;
-            }
-            .link{
-                font-size:26px;
-                border-bottom: 1px solid #ccc;
-                border-top: 1px solid #ccc;
-                display: block;
-                color:#525151;
-                height: 86px;
-                line-height: 86px;
-                span{
-                    float:right;
-                    color:black;
-                }
-            }
-            .logo{
-                text-align:center;
-                img{
-                    width:100px;
-                }       
-            }
-        }
+.lastHomeContainer {
+  padding: 0px 40px;
+  .invitImg {
+    img {
+      width: 670px;
     }
-    
+  }
+  .specialColumnist {
+    position: relative;
+    .title {
+      font-size: 0.56rem;
+      font-weight: 600;
+      color: #191919;
+      margin-bottom: 20px;
+    }
+    .link {
+      font-size: 26px;
+      border-bottom: 1px solid #ccc;
+      border-top: 1px solid #ccc;
+      display: block;
+      color: #525151;
+      height: 86px;
+      line-height: 86px;
+      span {
+        float: right;
+        color: black;
+      }
+    }
+    .logo {
+      text-align: center;
+      img {
+        width: 100px;
+      }
+    }
+  }
+}
 </style>

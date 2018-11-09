@@ -1,7 +1,7 @@
 <template>
-    <div class="detailBox">
+    <div class="detailBasic">
       <div class="detailHeader swiper-container">
-          <div class="topMenu" :class="isFixed== true?'isFixed':''">
+          <div class="topMenu" :class="isFixed== true?'isFixed':''" ref="topMenu">
               <span class="back" @click="back"><</span>
               <span class="like">❤</span>
               <span class="share">分享</span>
@@ -19,9 +19,9 @@
               <p class="desc" v-if="basic.product_type===1?true:false" v-text="basic.description"></p>
           </h4>
           <p class="priceBox">
-              <span v-text="basic.price+'元'" class="price"></span>
+              <span class="price">{{basic.price | capitalize}}</span>
               <span v-text="'/'+basic.show_entity_name" class="show_entity_name"></span>
-              <span class="origin_price" v-if="basic.origin_price?true:false" v-text="'  ￥'+basic.origin_price"></span>
+              <span class="origin_price" v-if="basic.origin_price?true:false"><del>{{ basic.origin_price | originPrice}}</del></span>
               <span> | 可退款</span>
           </p>
       </div>
@@ -29,200 +29,215 @@
 </template>
 
 <script>
-    import Vue from 'vue'
-    import Swiper from 'swiper'
-    import "../../assets/css/swiper-4.4.1/dist/css/swiper.css"
-  export default {
-    name:'',
-    props:['basicdata'],
-    data () {
-      return {
-          data:'',
-          basic:'',
-          product_images:'',
-          isFixed:false,
-          isFixedTittle:false,
-          pathName:this.$route.query.product_id
-        
-      };
+import Swiper from "swiper";
+import "../../assets/css/swiper-4.4.1/dist/css/swiper.css";
+export default {
+  name: "",
+  props: ["basicdata"],
+  data() {
+    return {
+      data: "",
+      basic: "",
+      product_images: "",
+      isFixed: false,
+      isFixedTittle: false,
+      pathName: this.$route.query.product_id
+    };
+  },
+  filters: {
+    capitalize: function(price) {
+      price = price.toString();
+      var a = price.slice(-2);
+      var b = price.slice(0, -2);
+      return b + "." + a +'元';
     },
+    originPrice(price){
+      price = price.toString();
+      var a = price.slice(-2);
+      var b = price.slice(0, -2);
+      return '￥'+ b + "." + a;
+    }
+  },
+  created() {
+    this.render();
+  },
+  beforeMount() {},
 
-    components: {},
-
-    computed: {
+  mounted() {
+    var swiper = new Swiper(".swiper-container", {
+      slidesPerView: 1,
+      spaceBetween: 0,
+      loop: true,
+      observer: true, // 修改swiper自己或子元素时,自动初始化swiper
+      observeParents: true // 修改swiper的父元素时,自动初始化swiper
+    });
+    //Vue.use(swiper);
+    window.addEventListener("scroll", this.handleScroll);
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this.handleScroll);
+  },
+  methods: {
+    render() {
+      this.data = JSON.parse(sessionStorage.getItem("detailproduct"));
+      this.basic = this.data.basic;
+      this.product_images = this.data.basic.product_images;
     },
-    created(){
-        this.render();
+    back() {
+      this.$store.dispatch("setShowFixed", true);
+      this.$router.go(-1);
     },
-    beforeMount() {
-    },
-
-    mounted() {
-        var swiper = new Swiper('.swiper-container', {
-            slidesPerView: 1,
-            spaceBetween: 0,
-            loop: true,
-            observer: true, // 修改swiper自己或子元素时,自动初始化swiper
-            observeParents: true,// 修改swiper的父元素时,自动初始化swiper
-        })
-        Vue.use(swiper);
-        window.addEventListener('scroll', this.handleScroll);
-
-    },
-    destroyed(){
-        window.removeEventListener('scroll', this.handleScroll);
-    },
-    methods: {
-        render(){
-            this.data=JSON.parse(sessionStorage.getItem("detailproduct"));
-            this.basic=this.data.basic;
-            this.product_images=this.data.basic.product_images;
-        },
-        back(){
-            this.$store.dispatch('setShowFixed',true);
-           // this.$router.push(this.$route.query.redirect); 
-            this.$router.go(-1);
-            //this.$router.push({ name: 'home'});
-        },
-         handleScroll () {  
-            this.$nextTick(() => {
-                let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;  
-                if (scrollTop > 500) {  
-                    this.isFixed = true;  
-                    this.isFixedTittle = true;  
-                } else {  
-                    this.isFixed = false;  
-                    this.isFixedTittle = false;  
-                }  
-            })	
+    handleScroll() {
+      this.$nextTick(() => {
+        let scrollTop =
+          document.documentElement.scrollTop || document.body.scrollTop;
+        if (scrollTop > 500) {
+          this.isFixed = true;
+          if(this.basic.product_type===1){
+            this.isFixedTittle=false;
+          }else{
+            this.isFixedTittle = true;
+          }
         }
-    },
-    watch: {
-       $route(_new,_old){
-           if(_new){
-               this.render();
-           }
-       }
+        else {
+          this.isFixed = false;
+          this.isFixedTittle = false;
+        }
+      });
+    }
+  },
+  watch: {
+    $route(_new, _old) {
+      if (_new) {
+        this.render();
+      }
     }
   }
-
+};
 </script>
 <style lang='scss' scoped>
-.isFixed{
-    position: fixed;
-    top: 0px;
-    z-index: 10004;
-    border-bottom:1px solid #ccc;
-    span{
-        color:black;
-    }
-}
-.isFixedTittle{
-    position: fixed;
-    top: 91px;
-    z-index: 10003;
-}
-.detailBox{
-        .detailHeader{
-            .topMenu{
-                position:fixed;
-                left:0;
-                top:0;
-                z-index:9;
-                width: 750px;
-                padding:10px 10px;
-                background: #fff;
-                box-sizing: border-box;
-                span{
-                    color:black;
-                    font-size:38px;
-                    padding:10px;
-                }
-                .back{
-                    float:left;
-                }
-                .like{
-                    float:right;
-                }
-                .share{
-                    float:right;
-                    font-size: 30px;
-                }
-                .product{
-                    display: inline-block;
-                    font-size: 30px;
-                    position:absolute;
-                    left:33%;
-                    right:40%;
-                    width: 200px;
-                    text-align: center;
-                    top:16px;
-                    bottom:0;
-                }
-            }
-            .ImgBox{
-                z-index:7;
-                li{
-                    img{
-                        width:100%;
-                    }
-                }
-            }
-            h4{
-                font-size:30px;
-                line-height: 50px;
-                background: #fff;
-                padding:0px 20px;
-                width: 100%;
-                border-bottom:5px solid #000;
-                box-sizing: border-box;
-                .desc{
-                    font-weight:100;
-                    font-size: 24px;
-                    color:#aaa;
-                }
-            }
-            .priceBox{
-                padding-left:20px;
-                height: 120px;
-                line-height: 120px;
-                span{
-                    font-size:28px;
-                    color:#aaa;
-                }
-                .price{
-                    font-size:40px;
-                    color:red;
-                }
-                .show_entity_name{
-                    color:red;
-                }
-            }
-        }
-    }
-    .swiper-container {
-      width: 100%;
-      height: 100%;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .swiper-slide {
-      text-align: center;
-      font-size: 18px;
-      background: #fff;
 
-      /* Center slide text vertically */
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: -webkit-flex;
-      display: flex;
-      -webkit-box-pack: center;
-      -ms-flex-pack: center;
-      -webkit-justify-content: center;
-      justify-content: center;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
-      -webkit-align-items: center;
-      align-items: center;
+.isFixedTittle {
+  position: fixed;
+  top: 91px;
+  z-index: 10003;
+}
+.detailBasic {
+  .detailHeader {
+    .topMenu {
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 9;
+      width: 750px;
+      padding: 10px 10px;
+      background:rgba(255,255,255,0);
+      color:#fff;
+      box-sizing: border-box;
+      span {
+        color: #fff;
+        font-size: 38px;
+        padding: 10px;
+      }
+      .back {
+        float: left;
+      }
+      .like {
+        float: right;
+      }
+      .share {
+        float: right;
+        font-size: 30px;
+      }
+      .product {
+        display: inline-block;
+        font-size: 30px;
+        position: absolute;
+        left: 33%;
+        right: 40%;
+        width: 200px;
+        text-align: center;
+        top: 16px;
+        bottom: 0;
+      }
     }
+    .ImgBox {
+      z-index: 7;
+      li {
+        img {
+          width: 100%;
+        }
+      }
+    }
+    h4 {
+      font-size: 30px;
+      line-height: 90px;
+      background: #fff;
+      padding: 0px 20px;
+      width: 100%;
+      border-bottom: 5px solid #000;
+      box-sizing: border-box;
+      height: 90px;
+      .desc {
+        font-weight: 100;
+        font-size: 24px;
+        color: #aaa;
+        line-height: 60px;
+      }
+    }
+    .priceBox {
+      padding-left: 20px;
+      height: 120px;
+      line-height: 120px;
+      margin-top:30px;
+      span {
+        font-size: 28px;
+        color: #aaa;
+      }
+      .price {
+        font-size: 40px;
+        color: red;
+      }
+      .show_entity_name {
+        color: red;
+        margin-right:20px;
+      }
+    }
+  }
+}
+.swiper-container {
+  width: 100%;
+  height: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+
+  /* Center slide text vertically */
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+.isFixed {
+  position: fixed;
+  top: 0px;
+  z-index: 10004;
+  border-bottom: 1px solid #ccc !important;
+  background:#fff !important;
+  span {
+    color: black!important;
+  }
+}
 </style>

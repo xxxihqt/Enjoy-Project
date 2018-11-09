@@ -54,6 +54,13 @@ function query(type,tablename, params, key,updateParams,callback) {
 					callback(result);
             });  
 		}
+		if(type=='del'){
+			db.collection(tablename).updateOne(params
+                ,updateParams, key,function(err, result) {
+					assert.equal(err, null);
+					callback(result);
+            });  
+		}
 		if(type=='sort'){
 			//排序
 			db.collection(tablename).find(params).sort(key).toArray(function(err, docs) {

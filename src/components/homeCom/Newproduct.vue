@@ -22,115 +22,126 @@
 </template>
 
 <script>
+export default {
+  name: "newproduct",
+  props: ["typeOfnewproduct"],
+  data() {
+    return {
+      storeList: "",
+      title: "",
+      desc: "",
+      enjoy_url_text: "",
+      tabs: ""
+    };
+  },
 
-  export default {
-    name:'newproduct',
-    props:['typeOfnewproduct'],
-    data () {
-      return {
-          storeList:'',
-          title:'',
-          desc:'',
-          enjoy_url_text:'',
-          tabs:''
-      };
+  components: {},
+
+  computed: {},
+
+  mounted() {
+    this.renderNewProduct();
+  },
+
+  methods: {
+    renderNewProduct() {
+      if (
+        Object.prototype.toString.call(this.typeOfnewproduct) ===
+        "[object String]"
+      ) {
+        this.storeList = eval(this.typeOfnewproduct)[6].data;
+        this.title = this.storeList.group_section.title;
+        this.desc = this.storeList.group_section.desc;
+        this.enjoy_url_text = this.storeList.group_section.enjoy_url_text;
+        this.tabs = this.storeList.tabs;
+      } else {
+        this.typeOfnewproduct.then(typeOfnewproduct => {
+          this.storeList = JSON.parse(typeOfnewproduct)[6].data;
+          this.title = this.storeList.group_section.title;
+          this.desc = this.storeList.group_section.desc;
+          this.enjoy_url_text = this.storeList.group_section.enjoy_url_text;
+          this.tabs = this.storeList.tabs;
+        });
+      }
     },
-
-    components: {},
-
-    computed: {},
-
-    mounted() {
-        this.renderNewProduct();
-    },
-
-    methods: {
-         renderNewProduct(){
-            this.storeList=this.typeOfnewproduct.data;
-            this.title=this.storeList.group_section.title;
-            this.desc=this.storeList.group_section.desc;
-            this.enjoy_url_text=this.storeList.group_section.enjoy_url_text;
-            this.tabs=this.storeList.tabs;
-            //console.log('this.storeList',this.storeList);
+    Todetial(product_id, id) {
+      var self = this;
+      $.ajax({
+        type: "get",
+        url: "http://10.3.135.51:9999/detail",
+        data: {
+          product_id: product_id,
+          sub_product_id: id
         },
-        Todetial(product_id,id){
-            var self=this;
-            $.ajax({
-                type:'get',
-                url:'http://localhost:9999/detail',
-                data:{
-                    product_id:product_id,
-                    sub_product_id:id
-                },
-                async:true,
-                success:function(data){
-                    data.qty=0;
-                    sessionStorage.setItem("detailproduct",JSON.stringify(data));
-                    self.$router.push({ name: 'detail', query: { product_id: product_id,sub_product_id:id }});
-                }
-            })
-
+        async: true,
+        success: function(data) {
+          data.qty = 0;
+          sessionStorage.setItem("detailproduct", JSON.stringify(data));
+          self.$router.push({
+            name: "detail",
+            query: { product_id: product_id, sub_product_id: id }
+          });
         }
+      });
     }
   }
-
+};
 </script>
 <style lang='scss' scoped>
-    .newproduct{
-        padding: 20px 40px;
-        .title {
-            font-size: 0.56rem;
-            font-weight: 600;
-            color: #191919;
-            margin-bottom: 8px;
-            position:relative;
-            a{
-                display: inline-block;
-                position: absolute;
-                right:0;
-                bottom: 0;
-                color:red;
-                font-size:25px;
-                font-weight: 200;
-            }
-        }
-        .sub-title {
-            font-size: 22px;
-            color: #9b9b9b;
-        }
-        .productlist{
-            display: flex;
-            margin-top:30px;
-            overflow: hidden;
-            border-bottom:1px solid #ccc;
-            li{
-                flex:1;
-                margin-right:20px;
-                img{
-                    width: 325px;
-                }
-                .title{
-                    font-size:26px;
-                }
-                .priceBox{
-                    height: 50px;
-                    line-height: 0px;
-                    overflow: hidden;
-                    padding-bottom:20px;
-                    .price{
-                        font-size:20px;
-                        color:red;
-                        display: inline-block;
-                        margin-right:20px;
-                    }
-                    .original_price{
-                        font-size:20px;
-                        display: inline-block;
-                        color:#ccc;
-                    }
-                }
-                
-            }
-        }
+.newproduct {
+  padding: 20px 40px;
+  .title {
+    font-size: 0.56rem;
+    font-weight: 600;
+    color: #191919;
+    margin-bottom: 8px;
+    position: relative;
+    a {
+      display: inline-block;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      color: red;
+      font-size: 25px;
+      font-weight: 200;
     }
+  }
+  .sub-title {
+    font-size: 22px;
+    color: #9b9b9b;
+  }
+  .productlist {
+    display: flex;
+    margin-top: 30px;
+    overflow: hidden;
+    border-bottom: 1px solid #ccc;
+    li {
+      flex: 1;
+      margin-right: 20px;
+      img {
+        width: 325px;
+      }
+      .title {
+        font-size: 26px;
+      }
+      .priceBox {
+        height: 50px;
+        line-height: 0px;
+        overflow: hidden;
+        padding-bottom: 20px;
+        .price {
+          font-size: 20px;
+          color: red;
+          display: inline-block;
+          margin-right: 20px;
+        }
+        .original_price {
+          font-size: 20px;
+          display: inline-block;
+          color: #ccc;
+        }
+      }
+    }
+  }
+}
 </style>

@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <router-view v-if="isRouterAlive"></router-view>
+         <router-view v-if="isRouterAlive">
+      </router-view>
     <efooter></efooter>
   </div>
 </template>
@@ -18,45 +19,18 @@ export default {
   },
   data(){
     return{
-      HomeArr:'',
-      HotArr:'',
       isRouterAlive:true
     }
   },
   components: {
     efooter
   },
+  beforeMount () {
+
+  },
   mounted(){
-    this.getHomeData();
-    this.getHotData();
   },
   methods:{
-      getHomeData:function(){
-          var self=this;
-          $.ajax({
-            type:'get',
-            url:'http://localhost:9999/gethomemsg',
-            async:true,
-            success:function(data){
-              self.HomeArr=data;
-              self.$store.dispatch("setHomeData",self.HomeArr)
-              localStorage.setItem("homedata",JSON.stringify(self.HomeArr));
-            }
-          })
-      },
-      getHotData:function(){
-         var self=this;
-          $.ajax({
-            type:'get',
-            url:'http://localhost:9999/gethotmsg',
-            async:true,
-            success:function(data){
-              self.HotArr=data;
-              self.$store.dispatch("setHotData",self.HotArr)
-              localStorage.setItem("hotdata",JSON.stringify(self.HotArr));
-            }
-          })
-      },
       reload:function(){
         this.isRouterAlive=false;
         this.$nextTick(function(){

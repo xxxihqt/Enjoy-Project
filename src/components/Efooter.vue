@@ -58,19 +58,23 @@ import '../assets/icon/iconfont.css'
         //console.log(this.isactive);
         switch (idx) {
           case 0:
-            location.href="/";
+            this.$router.push({name: "home"});
             break;
           case 1:
-            location.href="/discovery"
+            this.$router.push({name: "discovery"});
             break;
           case 2:
-            location.href="/magazine"
+            this.$router.push({name: "magazine"});
             break;
           case 3:
-            location.href="/car"
+            this.$router.push({name: "car"});
             break;
           case 4:
-            location.href="/me"
+            if (sessionStorage.getItem("name") && sessionStorage.getItem("_id")) {
+              this.$router.push({ name: "me" });
+            } else {
+              this.$router.push({ name: "login" });
+            }
             break;
         }
       }
@@ -89,8 +93,9 @@ import '../assets/icon/iconfont.css'
     display: flex;
     width: 750px;
     height: 98px;
-    border-top: 1px solid #e0e0e0;
+    border-top: 1px solid #aaa;
     z-index:10000;
+    background: #fff;
     span{
       flex:1;
       text-align:center;

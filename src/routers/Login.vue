@@ -29,7 +29,7 @@
 </template>
 <script>
   export default {
-    name:'',
+    name:'login',
     props:[''],
     data () {
       return {
@@ -78,7 +78,7 @@
                 var self = this;
                 $.ajax({
                     type:"post",
-                    url:'http://localhost:9999/user',
+                    url:'http://10.3.135.51:9999/user',
                     async:true,
                     data:{
                         choice:choice,
@@ -86,7 +86,6 @@
                         password:this.password
                     },
                     success:function(data){
-                        console.log(data);  
                         if(data.status===0){
                             self.error=data.data;
                         }
@@ -95,7 +94,10 @@
                             console.log(self.user_data);
                             sessionStorage.setItem('name',data.name);
                             sessionStorage.setItem('_id',data._id);
-                            self.$router.push(self.$route.query.redirect); 
+                            self.$router.go(-1);
+                            //self.$router.push(self.$route.query.redirect); 
+                                //self.$router.push({ name: "detailmagazine", query: { id: url } });
+
                         }
                         
                     }

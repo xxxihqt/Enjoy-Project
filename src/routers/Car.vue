@@ -10,10 +10,10 @@
   import carrecommend from '../components/carCom/Carrecommend'
 
   export default {
-    props:[''],
+    name:'car',
     data () {
       return {
-        name:'car'
+        user_product:''
       };
     },
 
@@ -23,15 +23,20 @@
     },
 
     computed: {},
+    beforeRouteEnter(to, from, next) {
+      next(vm=>{
+        //vm.render(); 
+      })
+    },
     created(){
         this.$store.dispatch('setShowFixed',true);
     },
-    beforeMount() {},
-
-    mounted() {},
-
-    methods: {},
-
+    beforeMount() {
+    },
+    mounted() {
+    },
+    methods: {
+    },
     watch: {}
 
   }

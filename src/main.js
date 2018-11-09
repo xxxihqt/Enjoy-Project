@@ -20,23 +20,18 @@ import axios from 'axios'
 // ajax请求
 Vue.prototype.$http = axios
 
+import VueTouch from'vue-touch'
+Vue.use(VueTouch, {name: 'v-touch'})
 
-/*引入路由文件,注意大小写，路由名称和路由文件用开头字母大小，在template中用小写，驼峰用-代替*/
-import Home from './routers/Home'
-import Discovery from './routers/Discovery'
-import Magezine from './routers/Magezine'
-import Car from './routers/Car'
-import Me from './routers/Me'
-import Detail from './routers/Detailpage'
-import Login from './routers/Login'
 
-import './assets/main.css'
 import './rem'
 
 /*引入UI组件*/
 // 引入mint-ui
 import Mint from 'mint-ui'
 import 'mint-ui/lib/style.css'
+import { CellSwipe } from 'mint-ui';
+Vue.component(CellSwipe.name, CellSwipe);
 
 // 刷新页面时转圈圈
 import { Indicator } from 'mint-ui' 
@@ -50,35 +45,51 @@ const routes = [
   {
     path:'/',
     name:'home',
-      meta: { 
-      requireAuth: true // 配置此条，进入页面前判断是否需要登陆 
-    }, 
-    component:Home
+    meta: { keepAlive: true },
+    component:resolve => require(['./routers/Home'], resolve)
   },{
     path:'/discovery',
     name:'discovery',
-    component:Discovery
+    meta: { keepAlive: true },
+    component:resolve => require(['./routers/Discovery.vue'], resolve)
   },{
     path:'/magazine',
     name:'magazine',
-    component:Magezine
+    meta: { keepAlive: true },
+    component:resolve => require(['./routers/Magazinemain.vue'], resolve)
   },{
     path:'/car',
     name:'car',
-    component:Car
+    meta: { 
+      requireAuth: true, // 配置此条，进入页面前判断是否需要登陆 
+      keepAlive: true
+    }, 
+    component:resolve => require(['./routers/Car.vue'], resolve)
   },{
     path:'/me',
     name:'me',
-    component:Me
+    component:resolve => require(['./routers/Me.vue'], resolve),
+    meta: { keepAlive: true }
   },{
     path:'/detail',
     name:'detail',
-    component:Detail
+    component:resolve => require(['./routers/Detailpage.vue'], resolve),
+    meta: { keepAlive: false }
   },{
     path:'/login',
     name:'login',
-    component:Login
-  }
+    component:resolve => require(['./routers/Login.vue'], resolve),
+    meta: { keepAlive: true }
+  },{
+    path:'/magazinedetail',
+    name:'detailmagazine',
+    component:resolve => require(['./routers/Detailmagazine.vue'], resolve)
+  },{
+    path:'/search',
+    name:'search',
+    component:resolve => require(['./routers/Search.vue'], resolve),
+    meta: { keepAlive: true }
+  },
 ]
 
 /*实例化router*/
@@ -87,26 +98,6 @@ const router = new VueRouter({
   routes
 })
 
-
-router.beforeEach((to, from, next) => { 
-  if (to.matched.some(res => res.meta.requireAuth)) { // 验证是否需要登陆 
-   if (sessionStorage.getItem('_id')) { // 查询本地存储信息是否已经登陆 
-    next(); 
-   } else { 
-    next({ 
-     path: '/login', // 未登录则跳转至login页面 
-     query: {redirect: to.fullPath} // 登陆成功后回到当前页面，这里传值给login页面，to.fullPath为当前点击的页面 
-     }); 
-   } 
-  } else { 
-   next(); 
-  } 
- });
-
-
-
-
-
 const store = new Vuex.Store({
 	/*状态*/
 	state: {
@@ -114,7 +105,9 @@ const store = new Vuex.Store({
     hotData:'',
     MagezineData:'',
     CarRecommend:'',
-    showfixed:true
+    showfixed:true,
+    userData:[],
+    SearchData:[]
 	},
 	/*存放到状态管理中*/
 	mutations: {
@@ -132,6 +125,12 @@ const store = new Vuex.Store({
     },
     keepShowFixed(state, data) {
 			state.showfixed = data;			
+		},
+    keepUserData(state, data) {
+			state.userData = data;			
+    },
+    keepSearchData(state, data) {
+			state.SearchData = data;			
 		}
   },
   /*从子组件拿回数据，触发mutations*/
@@ -150,6 +149,12 @@ const store = new Vuex.Store({
     },
     setShowFixed(context, data) {
 			context.commit('keepShowFixed', data);
+    },
+    setUserData(context, data) {
+			context.commit('keepUserData', data);
+    },
+    setSearchData(context, data) {
+			context.commit('keepSearchData', data);
 		}
   },
   /*把数据返回给子组件*/
@@ -168,11 +173,34 @@ const store = new Vuex.Store({
     },
     getShowFixed(state){
 			return state.showfixed;
-		},
+    },
+    getUserData(state){
+			return state.userData;
+    },
+    getSearchData(state){
+			return state.SearchData;
+		}
 	}
 })
 
+router.beforeEach((to, from, next) => {    
 
+    //to即将进入的目标路由对象，from当前导航正要离开的路由， next  :  下一步执行的函数钩子
+    if(to.path === '/login'){  
+      console.log('next');
+      next()  
+    }  // 如果即将进入登录路由，则直接放行
+    else {     //进入的不是登录路由
+      if(to.meta.requiresAuth && !sessionStorage.getItem('_id')) {
+        next({ path: '/login' ,query: { redirect: to.fullPath }})
+      } 
+
+      //下一跳路由需要登录验证，并且还未登录，则路由定向到  登录路由
+      else { 
+        next() 
+      } //如果不需要登录验证，或者已经登录成功，则直接放行
+  }       
+})
 
 new Vue({
   store,

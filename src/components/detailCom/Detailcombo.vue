@@ -11,9 +11,9 @@
             <div class="textBox">
                 <p class="title" v-text="item.product_name" @click="Todetial(item.product_id,item.id)"></p>
                 <p class="priceBox">
-                    <span class="price" v-text="item.price+'元/'"></span>
+                    <span class="price" >{{item.price | capitalize}}</span>
                     <span class="show_entity_name" v-text="item.show_entity_name"></span>
-                    <span class="origin_price" v-if="item.origin_price"><del v-text="'  ￥'+item.origin_price"></del></span>
+                    <span class="origin_price" v-if="item.origin_price"><del>{{item.origin_price | originPrice }}</del></span>
                 </p>
             </div>
         </li>
@@ -41,11 +41,20 @@
           }
       };
     },
-
-    components: {},
-
-    computed: {},
-
+    filters: {
+    capitalize: function(price) {
+      price = price.toString();
+      var a = price.slice(-2);
+      var b = price.slice(0, -2);
+      return b + "." + a +'元';
+    },
+    originPrice(price){
+      price = price.toString();
+      var a = price.slice(-2);
+      var b = price.slice(0, -2);
+      return '￥'+ b + "." + a;
+    }
+  },
     created() {
         this.render();
     },
@@ -53,6 +62,7 @@
     methods: {
         render(){
             this.data=JSON.parse(sessionStorage.getItem("detailproduct"));  
+            console.log(this.data);
             this.product_type=this.data.basic.product_type;
             this.data=this.data.modules;
             for(let i=0;i<this.data.length;i++){
@@ -65,13 +75,14 @@
             var self=this;
             $.ajax({
                 type:'get',
-                url:'http://localhost:9999/detail',
+                url:'http://10.3.135.51:9999/detail',
                 data:{
                     product_id:product_id,
                     sub_product_id:id
                 },
                 async:true,
                 success:function(data){
+                    console.log('data',data);
                     data.qty=0;
                     sessionStorage.setItem("detailproduct",JSON.stringify(data));
                     if(id){
@@ -117,10 +128,11 @@
                     .priceBox{
                         line-height: 0px;
                         span{
-                            font-size:20px;
+                            font-size:22px;
                             color:red;
                         }
                         .origin_price{
+                            margin-left:20px;
                             color:#aaa;
                         }
                     }

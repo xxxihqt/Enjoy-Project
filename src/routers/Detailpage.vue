@@ -25,6 +25,7 @@
 
   export default {
     inject:['reload'],
+    name:'detail',
     data () {
       return {
       };
@@ -45,12 +46,10 @@
     computed: {
     },
     created(){
-            
-        $(window).scrollTop(0);
-
+              this.$store.dispatch('setShowFixed',false);          
     },
     beforeMount(){
-      $(window).scrollTop(0);
+       $(window).scrollTop(0);
     },
     mounted() {
 
@@ -61,6 +60,7 @@
     watch: {
        $route(_new,_old){
            if(_new){
+             console.log(_new);
               this.reload();
            }
        }

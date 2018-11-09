@@ -1,22 +1,13 @@
 <template>
     <div id="header">
         <div id="header-top">
-            <div id="left" class="header-item"> <a href="/" class="v-link-active">首页</a>  </div>
             <div id="middle" class="header-item">
                  <img id="logo" alt="ENJOY" :src="logo"> 
-                 <span id="city">北京</span> </div>  
+                 <span id="city">广州</span> </div>  
             <div id="right" class="header-item">
                  <a class="item-search" href="/account/login" @click="toLogin" v-if="showLogin">登录</a>  
                  <a class="iconfont icon-seach" @click="showSeachPanel"></a> 
             </div>
-            <div class="logined-panel" style="display: none;">
-                 <a>我的订单</a>
-                 <a>我的礼券</a>  
-                 <a>登出</a> 
-            </div> 
-            <div class="search-panel" v-show="isShowSeachPanel"> 
-                <input type="text" placeholder="搜索本地精选 / 快递到家"> <button>搜索</button> 
-            </div> 
         </div>
     </div>
 </template>
@@ -28,9 +19,8 @@
     props:[''],
     data () {
       return {
-          logo:require('../imgs/logo1.png'),
-          isShowSeachPanel:false,
-          showLogin:true
+          logo:require('../imgs/login.png'),
+          showLogin:false
       };
     },
 
@@ -48,31 +38,55 @@
 
     methods: {
         showSeachPanel(){
-            this.isShowSeachPanel=!this.isShowSeachPanel;
+            console.log(666);
+            this.$router.push({ name: 'search'});                                          
         },
         toLogin(){
-            location.href="#/login"
+            this.$router.push({ path: '/login'});                              
         }
     },
-
     watch: {}
 
   }
 
 </script>
 <style lang='scss' scoped>
-    #logo{
-        width:136px;
+#header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100px;
+   background: #fff;
+   width: 750px;
+   border-bottom:1px solid #ccc;
+   padding:0px 30px;
+   z-index:11;
+    #header-top{
+        position: relative;
+        text-align: center;
+        #middle {
+           
+            #logo{
+                width: 136px;
+            }
+            #city{
+                margin-left:10px;
+                font-size:22px; 
+            }
+        }
+        #right{
+            position: absolute;
+            right:60px;
+            top:0px;
+            a {
+                overflow: hidden;
+                display: inline-block;
+                color:black;
+                font-size:36px;
+                line-height: 100px;
+            }
+        }
     }
-    #header{
-        position:fixed;
-        top:0;
-        left:0;
-    }
-    #header #header-top #middle {
-        padding-top: 0px;
-    }
-    #header #header-top #right a{
-        overflow:hidden;
-    }
+}
+
 </style>
