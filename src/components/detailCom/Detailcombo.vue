@@ -105,6 +105,7 @@
     .combo{
         padding:30px 20px;
         margin-bottom:100px;
+        z-index:1;
         h4{
             font-size:24px;
         }

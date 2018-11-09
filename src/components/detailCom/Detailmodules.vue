@@ -69,6 +69,7 @@
 <style lang='scss' scoped>
   .recommendreason{
     padding:20px 20px;
+    z-index:1;
     h4{
       border-top:1px solid #ccc;
       font-size:30px;

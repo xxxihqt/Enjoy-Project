@@ -63,6 +63,7 @@
 </script>
 <style lang='scss' scoped>
     .heightLight{
+        z-index:1;
         .littleHeightLight{
             padding: 30px;;
             h4{

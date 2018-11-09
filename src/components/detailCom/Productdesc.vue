@@ -65,6 +65,7 @@
 </script>
 <style lang='scss' scoped>
     .productDesc{
+        z-index:1;
         .littleProductDesc{
             padding:30px 30px 0px 30px;
             h4{

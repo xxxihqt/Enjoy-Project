@@ -107,7 +107,8 @@ const store = new Vuex.Store({
     CarRecommend:'',
     showfixed:true,
     userData:[],
-    SearchData:[]
+    SearchData:[],
+    showDetailHeader:false
 	},
 	/*存放到状态管理中*/
 	mutations: {
@@ -131,6 +132,9 @@ const store = new Vuex.Store({
     },
     keepSearchData(state, data) {
 			state.SearchData = data;			
+    },
+    keepDetailHeader(state, data) {
+			state.showDetailHeader = data;			
 		}
   },
   /*从子组件拿回数据，触发mutations*/
@@ -155,6 +159,9 @@ const store = new Vuex.Store({
     },
     setSearchData(context, data) {
 			context.commit('keepSearchData', data);
+    },
+    setDetailHeader(context, data) {
+			context.commit('keepDetailHeader', data);
 		}
   },
   /*把数据返回给子组件*/
@@ -179,6 +186,9 @@ const store = new Vuex.Store({
     },
     getSearchData(state){
 			return state.SearchData;
+    },
+    getDetailHeader(state){
+			return state.showDetailHeader;
 		}
 	}
 })

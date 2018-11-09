@@ -1,18 +1,22 @@
 <template>
   <div>
-    <detailbasic></detailbasic>
-    <detailmodulesone></detailmodulesone>
-    <detailmenu></detailmenu>
-    <usercomment></usercomment>
-    <productdesc></productdesc>
-    <heightlight></heightlight>
-    <detailtips></detailtips>
-    <detailcombo></detailcombo>
-    <littlecar></littlecar>
+    <detailheader></detailheader>
+    <div class="main-content">
+        <detailbasic></detailbasic>
+        <detailmodulesone></detailmodulesone>
+        <detailmenu></detailmenu>
+        <usercomment></usercomment>
+        <productdesc></productdesc>
+        <heightlight></heightlight>
+        <detailtips></detailtips>
+        <detailcombo></detailcombo>
+    </div>
+      <littlecar></littlecar>
   </div>
 </template>
 
 <script>
+    import detailheader from '../components/detailCom/Detailheader'
     import detailmodulesone from '../components/detailCom/Detailmodules'
     import detailbasic from '../components/detailCom/Detailbasic'
     import detailmenu from '../components/detailCom/Detailmenu'
@@ -32,6 +36,7 @@
     },
 
     components: {
+      detailheader,
         detailbasic,
         detailmodulesone,
         detailmenu,

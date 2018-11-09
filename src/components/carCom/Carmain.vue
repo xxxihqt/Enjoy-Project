@@ -125,21 +125,25 @@
                 },
                 async:true,
                 success:function(data){
-                   if(data.user_product.length>0){
-                    console.log('have');
+                   if(!data.user_product){
+                        self.isgoods=true;
+                        self.isNull=true;
+                        console.log('render',data);
+                   }else{
+                       if(data.user_product.length>0){
                         self.isgoods=false;
                         self.isNull=false;
                         self.userProduct=data.user_product;
                         console.log('render',data);
                         sessionStorage.setItem('user_product',JSON.stringify(data.user_product));
                         self.$store.dispatch('setUserData',data.user_product);
-                   }else{
-                        self.isNull=false;
-                        self.isgoods=true;
-                       console.log('removeItem');
-                       sessionStorage.removeItem('user_product');
+                        }else{
+                            self.isNull=true;
+                            self.isgoods=true;
+                            console.log('removeItem');
+                            sessionStorage.removeItem('user_product');
+                        }
                    }
-                   
                 }
             })
         },

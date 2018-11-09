@@ -1,12 +1,12 @@
 <template>
     <div class="detailBasic">
-      <div class="detailHeader swiper-container">
-          <div class="topMenu" :class="isFixed== true?'isFixed':''" ref="topMenu">
+      <div class="Header swiper-container">
+          <!-- <div class="topMenu" :class="isFixed== true?'isFixed':''" ref="topMenu">
               <span class="back" @click="back"><</span>
               <span class="like">❤</span>
               <span class="share">分享</span>
               <span v-show="isFixed" class="product">商品详情</span>
-          </div>
+          </div> -->
           <ul class="ImgBox swiper-wrapper" >
               <li v-for="(item,idx) in product_images" :key="idx" class="swiper-slide">
                   <img :src="item.img_url" alt="">
@@ -83,16 +83,13 @@ export default {
       this.basic = this.data.basic;
       this.product_images = this.data.basic.product_images;
     },
-    back() {
-      this.$store.dispatch("setShowFixed", true);
-      this.$router.go(-1);
-    },
     handleScroll() {
       this.$nextTick(() => {
         let scrollTop =
           document.documentElement.scrollTop || document.body.scrollTop;
         if (scrollTop > 500) {
-          this.isFixed = true;
+          this.$store.dispatch("setDetailHeader", true);
+          //this.isFixed = true;
           if(this.basic.product_type===1){
             this.isFixedTittle=false;
           }else{
@@ -100,7 +97,8 @@ export default {
           }
         }
         else {
-          this.isFixed = false;
+          //this.isFixed = false;
+          this.$store.dispatch("setDetailHeader", false);
           this.isFixedTittle = false;
         }
       });
@@ -117,50 +115,46 @@ export default {
 </script>
 <style lang='scss' scoped>
 
-.isFixedTittle {
-  position: fixed;
-  top: 91px;
-  z-index: 10003;
-}
 .detailBasic {
-  .detailHeader {
-    .topMenu {
-      position: fixed;
-      left: 0;
-      top: 0;
-      z-index: 9;
-      width: 750px;
-      padding: 10px 10px;
-      background:rgba(255,255,255,0);
-      color:#fff;
-      box-sizing: border-box;
-      span {
-        color: #fff;
-        font-size: 38px;
-        padding: 10px;
-      }
-      .back {
-        float: left;
-      }
-      .like {
-        float: right;
-      }
-      .share {
-        float: right;
-        font-size: 30px;
-      }
-      .product {
-        display: inline-block;
-        font-size: 30px;
-        position: absolute;
-        left: 33%;
-        right: 40%;
-        width: 200px;
-        text-align: center;
-        top: 16px;
-        bottom: 0;
-      }
-    }
+  z-index: 100000;
+  .Header {
+    // .topMenu {
+    //   position: fixed;
+    //   left: 0;
+    //   top: 0;
+    //   z-index: 90000;
+    //   width: 750px;
+    //   padding: 10px 10px;
+    //   background:rgba(255,255,255,0);
+    //   color:#000;
+    //   box-sizing: border-box;
+    //   span {
+    //     color: #000;
+    //     font-size: 38px;
+    //     padding: 10px;
+    //   }
+    //   .back {
+    //     float: left;
+    //   }
+    //   .like {
+    //     float: right;
+    //   }
+    //   .share {
+    //     float: right;
+    //     font-size: 30px;
+    //   }
+    //   .product {
+    //     display: inline-block;
+    //     font-size: 30px;
+    //     position: absolute;
+    //     left: 33%;
+    //     right: 40%;
+    //     width: 200px;
+    //     text-align: center;
+    //     top: 16px;
+    //     bottom: 0;
+    //   }
+    // }
     .ImgBox {
       z-index: 7;
       li {
@@ -230,14 +224,9 @@ export default {
   -webkit-align-items: center;
   align-items: center;
 }
-.isFixed {
-  position: fixed;
-  top: 0px;
-  z-index: 10004;
-  border-bottom: 1px solid #ccc !important;
-  background:#fff !important;
-  span {
-    color: black!important;
-  }
+.isFixedTittle {
+  position: fixed !important;
+  top: 91px !important;
+  z-index: 10003 !important;
 }
 </style>

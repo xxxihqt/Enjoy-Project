@@ -90,12 +90,35 @@ app.post('/user', function (req, res) {
     var username = req.body.username;
     var password = req.body.password;
     if (choice == 'reg') {
-        db.query('write', 'userData', {
+
+        db.query('find', 'userData', {
             username: username,
             password: password
-        }, null, null, function (docs) {
-            res.send(docs);
-        });
+        }, null, null, function (find_docs) {
+            if(find_docs.length==0){
+                db.query('write', 'userData', {
+                    username: username,
+                    password: password
+                }, null, null, function (docs) {
+                    db.query('find', 'userData', {
+                        username: username,
+                        password: password
+                    }, null, null, function (res_docs) {
+                        res.send({
+                            status:1,
+                            name:res_docs[0].username,
+                            _id: res_docs[0]._id
+                        });
+                })
+                });
+            }else{
+                res.send({
+                    status:'0',
+                    data:'用户名已被注册'
+                })
+            }
+        })
+        
     }
     if (choice == 'login') {
         db.query('find', 'userData', {

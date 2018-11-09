@@ -64,6 +64,7 @@
 </script>
 <style lang='scss' scoped>
     .tipsBox{
+        z-index:1;
         .littleTipsBox{
             padding-left:30px;
             padding-top:20px;

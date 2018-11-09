@@ -65,6 +65,7 @@
 </script>
 <style lang='scss' scoped>
     .usercommentBox{
+        z-index:1;
         padding:20px 30px;
         .littleBox{
             padding-bottom:50px;

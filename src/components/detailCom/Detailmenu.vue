@@ -66,7 +66,8 @@
 <style lang='scss' scoped>
     .menuBox{
         padding-top:50px;
-        background: #eee;;
+        background: #eee;
+        z-index:1;
         h4{
             text-align: center;
             font-size:36px;
